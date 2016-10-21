@@ -2,4 +2,8 @@
     <string name="app_name">Habitapp</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dummy_data">Thanks, you are right. but i saw this: Deprecated: This attribute is deprecated and is replaced by the textMultiLine flag in the inputType attribute. Use caution when altering existing layouts, as the default value of singeLine is false (multi-line mode), but if you specify any value for inputType, the default is single-line mode. (If both singleLine and inputType attributes are found, the inputType flags will override the value of singleLine.).</string>
 </resources>

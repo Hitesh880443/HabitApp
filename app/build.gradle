@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 23
     buildToolsVersion "24.0.3"
@@ -19,12 +19,36 @@ android {
     }
 }
 
+ext {
+    //dependencies
+    supportLibraryVersion = '23.4.0'
+    firebase_version = '9.6.1'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile('com.squareup.retrofit:retrofit:2.0.0-beta2') {
+        exclude module: 'okhttp'
+    }
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.github.rey5137:material:1.1.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     testCompile 'junit:junit:4.12'
+
+    /*compile "com.google.firebase:firebase-database:$firebase_version"
+  compile "com.google.firebase:firebase-crash:$firebase_version"
+  compile "com.google.firebase:firebase-auth:$firebase_version"
+  compile 'com.firebase:firebase-client-android:2.3.1'*/
+
 }
