@@ -64,7 +64,9 @@
             android:background="@color/green"
             android:gravity="center"
             android:text="Start"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
 

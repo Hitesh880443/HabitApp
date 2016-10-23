@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliceBlue"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.android.habitapp.addHabit.HabitSettingActivity"
+    tools:ignore="MissingPrefix"
+    tools:showIn="@layout/activity_habit_setting">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:elevation="0dp"
+        android:textColor="@color/white"
+        style="?android:attr/borderlessButtonStyle"
+        android:background="@color/colorAccent"
+        android:textAppearance="@style/TextAppearance.FontPath"
+        android:text="@string/set_habit" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/button"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
+
+        <TextView
+            android:id="@+id/tv_habitdec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.FontPath" />
+
+        <EditText
+            android:id="@+id/et_habit_desc"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_habitdec"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_corner_shape"
+            android:hint="description"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/et_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_habit_desc"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_corner_shape"
+            android:hint="10/10/2016"
+            android:inputType="textPersonName"
+            android:lines="1"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/et_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_date"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_corner_shape"
+            android:editable="false"
+            android:hint="08 : 30"
+            android:lines="1"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

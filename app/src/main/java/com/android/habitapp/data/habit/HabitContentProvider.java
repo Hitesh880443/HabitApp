@@ -59,7 +59,7 @@ public class HabitContentProvider extends ContentProvider {
                 break;
             case SINGLE_habit:
                 String id = uri.getPathSegments().get(1);
-                queryBuilder.appendWhere(HabitDb.HABIT_ID + "=" + id);
+                queryBuilder.appendWhere(HabitDb.HABIT_SR_NO + "=" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);

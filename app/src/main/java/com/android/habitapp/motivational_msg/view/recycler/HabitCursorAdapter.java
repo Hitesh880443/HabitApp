@@ -1,4 +1,4 @@
-package com.android.habitapp.habitstore.view.recycler;
+package com.android.habitapp.motivational_msg.view.recycler;
 
 import android.content.Context;
 import android.database.Cursor;

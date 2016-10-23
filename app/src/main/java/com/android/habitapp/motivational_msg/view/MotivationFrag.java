@@ -1,4 +1,4 @@
-package com.android.habitapp.habitstore.view;
+package com.android.habitapp.motivational_msg.view;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -34,9 +34,9 @@ import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;
-import com.android.habitapp.habitstore.beans.HabitSingle;
-import com.android.habitapp.habitstore.beans.HabitsAll;
-import com.android.habitapp.habitstore.view.recycler.HabitCursorAdapter;
+import com.android.habitapp.motivational_msg.beans.MsgSingle;
+import com.android.habitapp.motivational_msg.beans.MsgAll;
+import com.android.habitapp.motivational_msg.view.recycler.HabitCursorAdapter;
 import com.android.habitapp.network.HabitAppNetworkInterFace;
 import com.android.habitapp.network.RetrofitAPI;
 
@@ -49,7 +49,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MotivationFrag extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     //region Variables
@@ -203,19 +203,19 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
         Retrofit retrofit = RetrofitAPI.getRetrofitClient(Constants.BASE_URL);
         HabitAppNetworkInterFace service = retrofit.create(HabitAppNetworkInterFace.class);
-        Call<HabitsAll> call = service.getHabits();
-        call.enqueue(new Callback<HabitsAll>() {
+        Call<MsgAll> call = service.getMsg();
+        call.enqueue(new Callback<MsgAll>() {
             @Override
-            public void onResponse(Response<HabitsAll> response, Retrofit retrofit) {
+            public void onResponse(Response<MsgAll> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    HabitsAll data = response.body();
+                    MsgAll data = response.body();
                     if (data != null && data.getHabitList() != null && data.getHabitList().size() > 0) {
 
-                        ArrayList<HabitSingle> habiitList = data.getHabitList();
+                        ArrayList<MsgSingle> habiitList = data.getHabitList();
                         Log.d("Habit", String.valueOf(data.getHabitList().size()));
                         deleteRows();
                         for (int i = 0; i < habiitList.size(); i++) {
-                            HabitSingle single = habiitList.get(i);
+                            MsgSingle single = habiitList.get(i);
 
                             ContentValues values = new ContentValues();
                             values.put(HabitDb.HABIT_ID, single.getHabit_id());

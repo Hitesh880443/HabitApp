@@ -11,4 +11,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_spash_screen">SpashScreen</string>
+    <string name="create_own_habit">Start Own habit</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="set_habit">SET MY HABIT</string>
 </resources>

@@ -8,6 +8,8 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="green">#8BC34A</color>
+    <color name="aliceBlue">#F1F4F5</color>
+    <color name="pattensBlue">#DCE1E6</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

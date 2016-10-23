@@ -21,11 +21,14 @@
             app:cpv_indeterminate="true" />
     </RelativeLayout>
 
+
     <android.support.v7.widget.RecyclerView
+        android:paddingTop="10dp"
         android:id="@+id/rv_habit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorMainBgLight"></android.support.v7.widget.RecyclerView>
+        android:background="@color/aliceBlue"
+        ></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

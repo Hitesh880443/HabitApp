@@ -1,78 +1,70 @@
 package com.android.habitapp;
 
 import android.content.ContentValues;
-import android.support.design.widget.TabLayout;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
 import com.android.habitapp.data.habit.HabitContentProvider;
 import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.habitstore.view.AllHabitFrag;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    //region Variables
+    private String habit_id, habit_name, habit_desciption, habit_users;
+    //endregion
+
+    //region Views
+    private FloatingActionButton fab;
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
     private ViewPager mViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    //endregion
 
+    //region Lifecycle_and_Android_Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
                 ContentValues values = new ContentValues();
                 values.put(HabitDb.HABIT_ID, "100");
                 values.put(HabitDb.HABIT_NAME, "gym");
                 values.put(HabitDb.HABIT_DESCIPTION, "Very Imp");
                 values.put(HabitDb.HABIT_USERS, "10");
-
                 Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI, values)));
 
 
@@ -104,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //endregion
+
+    //region LocalMethods_and_classes
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -180,4 +175,12 @@ public class MainActivity extends AppCompatActivity {
             return rootView;
         }
     }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    //endregion
 }
