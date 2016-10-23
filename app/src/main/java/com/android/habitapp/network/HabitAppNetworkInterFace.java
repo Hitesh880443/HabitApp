@@ -1,6 +1,6 @@
 package com.android.habitapp.network;
 
-import com.android.habitapp.myhabits.beans.HabitsAll;
+import com.android.habitapp.habitstore.beans.HabitsAll;
 
 import retrofit.Call;
 import retrofit.http.GET;

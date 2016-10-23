@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.android.habitapp.data.habit.HabitContentProvider;
 import com.android.habitapp.data.habit.HabitDb;
-import com.android.habitapp.myhabits.view.AllHabitFrag;
+import com.android.habitapp.habitstore.view.AllHabitFrag;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 ContentValues values = new ContentValues();
+                values.put(HabitDb.HABIT_ID, "100");
                 values.put(HabitDb.HABIT_NAME, "gym");
                 values.put(HabitDb.HABIT_DESCIPTION, "Very Imp");
                 values.put(HabitDb.HABIT_USERS, "10");
@@ -135,11 +136,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "MY HABIT";
                 case 1:
-                    return "SECTION 2";
+                    return "HABIT STORE";
                 case 2:
-                    return "SECTION 3";
+                    return "NOTIFICATION";
             }
             return null;
         }

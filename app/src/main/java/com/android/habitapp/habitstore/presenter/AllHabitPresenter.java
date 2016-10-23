@@ -1,10 +1,8 @@
-package com.android.habitapp.myhabits.presenter;
+package com.android.habitapp.habitstore.presenter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.beans.Note;
-import com.android.habitapp.myhabits.AllHabitInterface;
-import com.android.habitapp.myhabits.view.recycler.NotesViewHolder;
+import com.android.habitapp.habitstore.AllHabitInterface;
+import com.android.habitapp.habitstore.view.recycler.NotesViewHolder;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -201,39 +198,13 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
     public void clickNewNote(final EditText editText) {
         getView().showProgress();
         final String noteText = editText.getText().toString();
-        if ( !noteText.isEmpty() ) {
-            new AsyncTask<Void, Void, Integer>() {
-                @Override
-                protected Integer doInBackground(Void... params) {
-                    // Insert HABIT_NAME in Model, returning result
-                    return mModel.insertNote(makeNote(noteText));
-                }
 
-                @Override
-                protected void onPostExecute(Integer adapterPosition) {
-                    try {
-                        if (adapterPosition > -1) {
-                            // Insert HABIT_NAME
-                            getView().clearEditText();
-                            getView().notifyItemInserted(adapterPosition + 1);
-                            //getView().notifyItemRangeChanged(adapterPosition, mModel.getNotesCount());
-                        } else {
-                            // Inform about error
-                            getView().hideProgress();
-                            getView().showToast(makeToast("Error creating HABIT_NAME [" + noteText + "]"));
-                        }
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.execute();
-        } else {
             try {
                 getView().showToast(makeToast("Cannot add a blank HABIT_NAME!"));
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        }
+
     }
 
     @Override
@@ -246,13 +217,13 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
      * @param noteText  String with Note text
      * @return  A Note object
      */
-    public Note makeNote(String noteText) {
+  /*  public Note makeNote(String noteText) {
         Note note = new Note();
         note.setText( noteText );
         note.setDate(getDate());
         return note;
 
-    }
+    }*/
 
     /**
      * Get current Date as a String

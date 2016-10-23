@@ -1,8 +1,7 @@
-package com.android.habitapp.myhabits.view.recycler;
+package com.android.habitapp.habitstore.view.recycler;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 /**
  * Created by Hitesh on 10/21/2016.

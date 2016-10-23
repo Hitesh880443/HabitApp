@@ -1,4 +1,4 @@
-package com.android.habitapp.myhabits.view.recycler;
+package com.android.habitapp.habitstore.view.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

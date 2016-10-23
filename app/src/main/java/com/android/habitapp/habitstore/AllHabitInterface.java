@@ -1,4 +1,4 @@
-package com.android.habitapp.myhabits;
+package com.android.habitapp.habitstore;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.habitapp.beans.Note;
-import com.android.habitapp.myhabits.view.recycler.NotesViewHolder;
+import com.android.habitapp.habitstore.view.recycler.NotesViewHolder;
 
 public interface AllHabitInterface {
 
@@ -57,7 +56,7 @@ public interface AllHabitInterface {
     interface AllHabitModelInterfaces {
         void onDestroy(boolean isChangingConfiguration);
 
-        int insertNote(Note note);
+
 
         void loadData();
 

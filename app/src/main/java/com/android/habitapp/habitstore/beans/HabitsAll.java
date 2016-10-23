@@ -1,4 +1,4 @@
-package com.android.habitapp.myhabits.beans;
+package com.android.habitapp.habitstore.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;

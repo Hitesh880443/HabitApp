@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.habitapp.myhabits.view.SampleFrag">
+    tools:context="com.android.habitapp.habitstore.view.SampleFrag">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

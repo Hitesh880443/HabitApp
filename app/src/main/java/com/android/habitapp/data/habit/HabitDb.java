@@ -25,6 +25,7 @@ public class HabitDb {
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
 
 
+    public static final String HABIT_SR_NO = "HABIT_SR_NO";
     public static final String HABIT_ID = "HABIT_ID";
     public static final String HABIT_NAME = "HABIT_NAME";
     public static final String HABIT_DESCIPTION = "HABIT_DESCIPTION";
@@ -33,7 +34,8 @@ public class HabitDb {
 
     private static final String CREATE_TABLE_HABIT =
             CREATE_TABLE + TABLE_HABIT + " ( " +
-                    HABIT_ID + TYPE_INT + NOT_NULL + PRIMARY_KEY + AUTOINCREMENT + COMMA_SPACE +
+                    HABIT_SR_NO + TYPE_INT + NOT_NULL + PRIMARY_KEY + AUTOINCREMENT + COMMA_SPACE +
+                    HABIT_ID + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
                     HABIT_NAME + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
                     HABIT_DESCIPTION + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
                     HABIT_USERS + TYPE_TEXT + NOT_NULL +
