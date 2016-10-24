@@ -146,6 +146,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
                 String rowId = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
                 Bundle bundle = new Bundle();
                 bundle.putString("rowId", rowId);
+                bundle.putString("habitType", "store");
                 addHabit.putExtras(bundle);
                 mContext.startActivity(addHabit);
 

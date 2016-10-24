@@ -12,6 +12,9 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_spash_screen">SpashScreen</string>
     <string name="create_own_habit">Start Own habit</string>
-    <string name="title_activity_main3">Main3Activity</string>
+    <string name="title_activity_main3">Adding New Habit</string>
     <string name="set_habit">SET MY HABIT</string>
+    <string name="reson">Reason for doing this habit</string>
+    <string name="reminderTime">Set reminder time</string>
+    <string name="habitName">Give this habit name</string>
 </resources>

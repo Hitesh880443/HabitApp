@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -29,7 +30,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class HabitSettingActivity extends AppCompatActivity {
 
     //region Variables
-    private String habit_id, habit_name, habit_desciption, habit_users;
+    private String habit_id, habit_name, habit_desciption, habit_users, id, habitType;
     //endregion
 
     //region Views
@@ -38,6 +39,7 @@ public class HabitSettingActivity extends AppCompatActivity {
     private EditText et_habit_desc, et_date, et_time;
     private Button btn;
     private ActionBar actionBar;
+    private LinearLayout ll_own_habit;
     //endregion
 
     //region Lifecycle_and_Android_Methods
@@ -47,9 +49,16 @@ public class HabitSettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit_setting);
 
         Bundle bundle = this.getIntent().getExtras();
-        String id = bundle.getString("rowId");
+
+        habitType = bundle.getString("habitType");
+        if (habitType.equalsIgnoreCase("store")) {
+            id = bundle.getString("rowId");
+        }
         setUpView();
-        loadData(id);
+        if (habitType.equalsIgnoreCase("store")) {
+            loadData(id);
+        }
+
 
     }
 
@@ -76,6 +85,15 @@ public class HabitSettingActivity extends AppCompatActivity {
         et_date = (EditText) findViewById(R.id.et_date);
         et_time = (EditText) findViewById(R.id.et_time);
         btn = (Button) findViewById(R.id.button);
+        ll_own_habit = (LinearLayout) findViewById(R.id.ll_own_habit);
+        if (habitType.equalsIgnoreCase("store")) {
+            ll_own_habit.setVisibility(View.GONE);
+            tv_habitdec.setVisibility(View.VISIBLE);
+        } else {
+            ll_own_habit.setVisibility(View.VISIBLE);
+            tv_habitdec.setVisibility(View.GONE);
+        }
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

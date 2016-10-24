@@ -16,5 +16,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Titles" parent="android:TextAppearance">>
+        <item name="fontPath">fonts/Raleway-SemiBold.ttf</item>
+    </style>
+    <style name="splashBig" parent="android:TextAppearance">>
+        <item name="fontPath">fonts/Raleway-Heavy.ttf</item>
+    </style>
 
 </resources>

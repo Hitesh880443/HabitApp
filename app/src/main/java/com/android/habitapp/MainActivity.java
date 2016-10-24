@@ -1,10 +1,9 @@
 package com.android.habitapp;
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,17 +11,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
-import com.android.habitapp.data.habit.HabitContentProvider;
+import com.android.habitapp.addHabit.HabitSettingActivity;
 import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.habitstore.view.AllHabitFrag;
+
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     //region Variables
     private String habit_id, habit_name, habit_desciption, habit_users;
+    private ArrayList<Fragment> fragList;
+    private ArrayList<String> fragListName;
     //endregion
 
     //region Views
@@ -49,6 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        fragList = new ArrayList<>();
+        fragList.add(new AllHabitFrag());
+        fragList.add(PlaceholderFragment.newInstance(1));
+        fragList.add(PlaceholderFragment.newInstance(1));
+
+        fragListName = new ArrayList<>();
+        fragListName.add("Habit Store");
+        fragListName.add("My Habit");
+        fragListName.add("Wall");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -58,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 ContentValues values = new ContentValues();
                 values.put(HabitDb.HABIT_ID, "100");
@@ -66,10 +79,38 @@ public class MainActivity extends AppCompatActivity {
                 values.put(HabitDb.HABIT_DESCIPTION, "Very Imp");
                 values.put(HabitDb.HABIT_USERS, "10");
                 Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI, values)));
+*/
+                Intent addHabit = new Intent(MainActivity.this, HabitSettingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("habitType", "own");
+                addHabit.putExtras(bundle);
+                startActivity(addHabit);
+            }
+        });
 
+        mViewPager.setOffscreenPageLimit(fragList.size());
+        mViewPager.setCurrentItem(1);
+        fab.show();
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == 1)
+                    fab.show();
+                else
+                    fab.hide();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
+
 
     }
 
@@ -115,29 +156,22 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
 
-            if (position == 0)
+            return fragList.get(position);
+          /*  if (position == 0)
                 return new AllHabitFrag();
             else
-                return PlaceholderFragment.newInstance(position + 1);
+                return PlaceholderFragment.newInstance(position + 1);*/
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return fragList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "MY HABIT";
-                case 1:
-                    return "HABIT STORE";
-                case 2:
-                    return "NOTIFICATION";
-            }
-            return null;
+            return fragListName.get(position);
         }
     }
 
@@ -182,5 +216,23 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+
+    // To animate view slide out from top to bottom
+    public void slideToBottom(View view) {
+        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, view.getHeight() * 2);
+        animate.setDuration(300);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
+
+    // To animate view slide out from bottom to top
+    public void slideToTop(View view) {
+        TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), 0);
+        animate.setDuration(300);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.VISIBLE);
+    }
     //endregion
 }
