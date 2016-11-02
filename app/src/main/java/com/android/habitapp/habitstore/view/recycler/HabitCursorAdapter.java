@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.habitapp.R;
 import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.extra.Utils;
 
 /**
  * Created by Hitesh on 10/21/2016.
@@ -32,7 +33,7 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
 
     @Override
     public HabitViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final View view = this.layoutInflater.inflate(R.layout.row_habit_second, parent, false);
+        final View view = this.layoutInflater.inflate(R.layout.row_habitstore, parent, false);
 //        final View view = this.layoutInflater.inflate(R.layout.row_habit, parent, false);
         view.setOnClickListener(this);
 
@@ -56,6 +57,10 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
         }
     }
 
+    public interface OnItemClickListener {
+        void onItemClicked(Cursor cursor);
+    }
+
     public static class HabitViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, habit_desc;
@@ -72,14 +77,10 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
         public void bindData(final Cursor cursor) {
             final String name = cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME));
             final String habit_desc = cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_DESCIPTION));
-            this.name.setText(name);
+            this.name.setText(Utils.setFirstltrCapitcal(name));
             this.habit_desc.setText(habit_desc);
             if (cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_ID)).equalsIgnoreCase("5"))
                 this.btn_start.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClicked(Cursor cursor);
     }
 }

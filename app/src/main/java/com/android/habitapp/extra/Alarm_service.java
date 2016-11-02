@@ -1,6 +1,5 @@
 package com.android.habitapp.extra;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,15 +25,12 @@ import com.android.habitapp.R;
  */
 public class Alarm_service extends Service {
 
+    private static int NOTIFICATION_ID = 1;
     boolean isRunning;
     MediaPlayer mediaplayer;
-
+    Notification notification;
     private NotificationManager notificationManager;
     private PendingIntent pendingIntent;
-    private static int NOTIFICATION_ID = 1;
-    Notification notification;
-
-
 
 
     public Alarm_service() {
@@ -52,7 +48,7 @@ public class Alarm_service extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //return super.onStartCommand(intent, flags, startId);
         Context context = this.getApplicationContext();
-        notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent mIntent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("test", "test");
@@ -77,9 +73,9 @@ public class Alarm_service extends Service {
         notification.ledARGB = 0xFFFFA500;
         notification.ledOnMS = 800;
         notification.ledOffMS = 1000;
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
-        Log.i("notif","Notifications sent.");
+        Log.i("notif", "Notifications sent.");
         return START_NOT_STICKY;
     }
 

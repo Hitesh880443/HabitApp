@@ -2,7 +2,6 @@ package com.android.habitapp.habitstore.presenter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import java.util.Locale;
 
 /**
  * Presenter layer on Model View Presenter pattern
- *
+ * <p>
  * ---------------------------------------------------
  * Created by Tin Megali on 18/03/16.
  * Project: tuts+mvp_sample
@@ -40,7 +39,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Presenter Constructor
-     * @param view  Secondact
+     *
+     * @param view Secondact
      */
     public AllHabitPresenter(AllHabitInterface.AllHabitViewInterfaces view) {
         mView = new WeakReference<>(view);
@@ -48,8 +48,9 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Called by View every time it is destroyed.
-     * @param isChangingConfiguration   true: is changing configuration
-     *                                  and will be recreated
+     *
+     * @param isChangingConfiguration true: is changing configuration
+     *                                and will be recreated
      */
     @Override
     public void onDestroy(boolean isChangingConfiguration) {
@@ -58,7 +59,7 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
         // Inform Model about the event
         mModel.onDestroy(isChangingConfiguration);
         // Activity destroyed
-        if ( !isChangingConfiguration ) {
+        if (!isChangingConfiguration) {
             // Nulls Model when the Activity destruction is permanent
             mModel = null;
         }
@@ -71,7 +72,7 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
      * @throws NullPointerException when View is unavailable
      */
     private AllHabitInterface.AllHabitViewInterfaces getView() throws NullPointerException {
-        if ( mView != null )
+        if (mView != null)
             return mView.get();
         else
             throw new NullPointerException("View is unavailable");
@@ -79,7 +80,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Called by View during the reconstruction events
-     * @param view  Activity instance
+     *
+     * @param view Activity instance
      */
     @Override
     public void setView(AllHabitInterface.AllHabitViewInterfaces view) {
@@ -88,6 +90,7 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Called by Activity during MVP setup. Only called once.
+     *
      * @param model Model instance
      */
     public void setModel(AllHabitInterface.AllHabitModelInterfaces model) {
@@ -132,8 +135,9 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Creat a Toast object with given message
-     * @param msg   Toast message
-     * @return      A Toast object
+     *
+     * @param msg Toast message
+     * @return A Toast object
      */
     private Toast makeToast(String msg) {
         return Toast.makeText(getView().getAppContext(), msg, Toast.LENGTH_SHORT);
@@ -141,7 +145,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Retrieve total Notes count from Model
-     * @return  Notes size
+     *
+     * @return Notes size
      */
 
     @Override
@@ -164,7 +169,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Retrieve Application Context
-     * @return  Application context
+     *
+     * @return Application context
      */
     @Override
     public Context getAppContext() {
@@ -177,7 +183,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Retrieves Activity context
-     * @return  Activity context
+     *
+     * @return Activity context
      */
     @Override
     public Context getActivityContext() {
@@ -192,18 +199,19 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
      * Called by View when user clicks on new Note btn.
      * Creates a Note with text typed by the user and asks
      * Model to insert in DB.
-     * @param editText  EdiText with text typed by user
+     *
+     * @param editText EdiText with text typed by user
      */
     @Override
     public void clickNewNote(final EditText editText) {
         getView().showProgress();
         final String noteText = editText.getText().toString();
 
-            try {
-                getView().showToast(makeToast("Cannot add a blank HABIT_NAME!"));
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+        try {
+            getView().showToast(makeToast("Cannot add a blank HABIT_NAME!"));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -215,7 +223,7 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
     /**
      * Create a Note object with giver text
      * @param noteText  String with Note text
-     * @return  A Note object
+     * @return A Note object
      */
   /*  public Note makeNote(String noteText) {
         Note note = new Note();
@@ -227,7 +235,8 @@ public class AllHabitPresenter implements AllHabitInterface.AllHabitPresenterInt
 
     /**
      * Get current Date as a String
-     * @return  The current date
+     *
+     * @return The current date
      */
     private String getDate() {
         return new SimpleDateFormat("HH:mm:ss - MM/dd/yyyy", Locale.getDefault()).format(new Date());

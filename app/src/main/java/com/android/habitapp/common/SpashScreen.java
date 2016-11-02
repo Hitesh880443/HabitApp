@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.android.habitapp.MainActivity;
 import com.android.habitapp.R;
@@ -39,9 +35,9 @@ public class SpashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_spash_screen);
         mContext = this;
 
-        if (Utils.isNetworkAvailable(mContext))
+       /* if (Utils.isNetworkAvailable(mContext))
             getData();
-        else {
+        else {*/
             Thread timerThread = new Thread() {
                 public void run() {
                     try {
@@ -54,7 +50,7 @@ public class SpashScreen extends AppCompatActivity {
                 }
             };
             timerThread.start();
-        }
+        //}
     }
 
     @Override
@@ -68,7 +64,7 @@ public class SpashScreen extends AppCompatActivity {
 
         Retrofit retrofit = RetrofitAPI.getRetrofitClient(Constants.BASE_URL);
         HabitAppNetworkInterFace service = retrofit.create(HabitAppNetworkInterFace.class);
-        Call<HabitsAll> call = service.getHabits();
+        Call<HabitsAll> call = service.getHabits("0");
         call.enqueue(new Callback<HabitsAll>() {
             @Override
             public void onResponse(Response<HabitsAll> response, Retrofit retrofit) {

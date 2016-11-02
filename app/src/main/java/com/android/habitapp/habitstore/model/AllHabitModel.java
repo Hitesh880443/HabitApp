@@ -1,24 +1,11 @@
 package com.android.habitapp.habitstore.model;
 
 
-
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-
-import com.android.habitapp.data.habit.HabitContentProvider;
 import com.android.habitapp.habitstore.AllHabitInterface;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  * Model layer on Model View Presenter Pattern
- *
+ * <p>
  * ---------------------------------------------------
  * Created by Tin Megali on 18/03/16.
  * Project: tuts+mvp_sample
@@ -27,7 +14,7 @@ import java.util.ArrayList;
  * <a href="http://www.github.com/tinmegali>github</a>
  * ---------------------------------------------------
  */
-public class AllHabitModel  implements AllHabitInterface.AllHabitModelInterfaces {
+public class AllHabitModel implements AllHabitInterface.AllHabitModelInterfaces {
 
     private static final int LOADER_SEARCH_RESULTS = 0;
     // Presenter reference
@@ -61,9 +48,6 @@ public class AllHabitModel  implements AllHabitInterface.AllHabitModelInterfaces
         }
         return -1;
     }*/
-
-
-
 
 
 }

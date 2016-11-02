@@ -17,4 +17,6 @@
     <string name="reson">Reason for doing this habit</string>
     <string name="reminderTime">Set reminder time</string>
     <string name="habitName">Give this habit name</string>
+    <string name="days_comp">Days completed :</string>
+    <string name="remider_lbl">Reminder on :</string>
 </resources>

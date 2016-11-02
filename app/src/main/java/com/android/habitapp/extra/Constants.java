@@ -6,7 +6,9 @@ package com.android.habitapp.extra;
 
 public class Constants {
 
-    public static final String BASE_URL="http://www.coderkatta.com/spot/api/";
+    public static final String BASE_URL = "http://www.coderkatta.com/spot/api/";
     public static final String FIRST_RUN = "first_run";
     public static final String LOG_TAG = "HabitApp";
+    public static final String HABIT_LAST_ID  ="HABIT_LAST_ID";
+    public static final String MOTIVELAST = "MOTIVELAST";
 }

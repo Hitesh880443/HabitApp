@@ -57,7 +57,6 @@ public interface AllHabitInterface {
         void onDestroy(boolean isChangingConfiguration);
 
 
-
         void loadData();
 
     }

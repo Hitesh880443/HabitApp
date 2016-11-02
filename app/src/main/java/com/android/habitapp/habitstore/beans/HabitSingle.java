@@ -7,8 +7,19 @@ import android.os.Parcelable;
  * Created by Hitesh on 10/20/2016.
  */
 
-public class HabitSingle implements Parcelable{
+public class HabitSingle implements Parcelable {
 
+    public static final Creator<HabitSingle> CREATOR = new Creator<HabitSingle>() {
+        @Override
+        public HabitSingle createFromParcel(Parcel in) {
+            return new HabitSingle(in);
+        }
+
+        @Override
+        public HabitSingle[] newArray(int size) {
+            return new HabitSingle[size];
+        }
+    };
     private String habit_id;
     private String habit_name;
     private String habit_desciption;
@@ -30,18 +41,6 @@ public class HabitSingle implements Parcelable{
         habit_desciption = in.readString();
         habit_users = in.readString();
     }
-
-    public static final Creator<HabitSingle> CREATOR = new Creator<HabitSingle>() {
-        @Override
-        public HabitSingle createFromParcel(Parcel in) {
-            return new HabitSingle(in);
-        }
-
-        @Override
-        public HabitSingle[] newArray(int size) {
-            return new HabitSingle[size];
-        }
-    };
 
     public String getHabit_id() {
         return habit_id;

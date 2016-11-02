@@ -1,4 +1,4 @@
-package com.android.habitapp.motivational_msg.view.recycler;
+package com.android.habitapp.motive.view.recycler;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

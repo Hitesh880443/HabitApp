@@ -5,11 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".common.HabutAppApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".common.HabutAppApplication"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -44,6 +44,10 @@
         <activity
             android:name=".addHabit.HabitSettingActivity"
             android:label="@string/title_activity_main3"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".addHabit.CalenderViewAct"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

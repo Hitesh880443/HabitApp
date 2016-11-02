@@ -11,20 +11,6 @@ import java.util.ArrayList;
 
 public class HabitsAll implements Parcelable {
 
-    private ArrayList<HabitSingle> habitList;
-
-
-    public HabitsAll() {
-    }
-
-    public HabitsAll(ArrayList<HabitSingle> habitList) {
-        this.habitList = habitList;
-    }
-
-    protected HabitsAll(Parcel in) {
-        habitList = in.createTypedArrayList(HabitSingle.CREATOR);
-    }
-
     public static final Creator<HabitsAll> CREATOR = new Creator<HabitsAll>() {
         @Override
         public HabitsAll createFromParcel(Parcel in) {
@@ -36,6 +22,18 @@ public class HabitsAll implements Parcelable {
             return new HabitsAll[size];
         }
     };
+    private ArrayList<HabitSingle> habitList;
+
+    public HabitsAll() {
+    }
+
+    public HabitsAll(ArrayList<HabitSingle> habitList) {
+        this.habitList = habitList;
+    }
+
+    protected HabitsAll(Parcel in) {
+        habitList = in.createTypedArrayList(HabitSingle.CREATOR);
+    }
 
     public ArrayList<HabitSingle> getHabitList() {
         return habitList;

@@ -21,21 +21,21 @@ import java.util.HashMap;
 /**
  * Retains and maintain object's state between configuration changes
  * in Activitys and Fragments.
- *
+ * <p>
  * Created by Tin Megali on 24/02/16. <br>
  * Project: AndroidMVP <br>
- *
+ * <p>
  * <a href="http://www.tinmegali.com">www.tinmegali.com</a>
  * Based on <a href="https://github.com/douglascraigschmidt/POSA-15/tree/master/ex/AcronymExpander/src/vandy/mooc">
- *     framework MVP</a> developed by
+ * framework MVP</a> developed by
  * <a href="https://github.com/douglascraigschmidt">
- *     Dr. Douglas Schmidth</a>
+ * Dr. Douglas Schmidth</a>
  *
  * @see <a href="https://github.com/tinmegali/simple-mvp">Project's Git</a> <br>
  * @see <a href="https://github.com/tinmegali/simple-mvp/tree/master/AndroidMVP/app">Sample Application</a>
  * @see <a href="https://github.com/tinmegali/simple-mvp/blob/master/AndroidMVP/app/src/main/java/com/tinmegali/androidmvp/main/MVP_MainActivity.java">
- *         Sample MVP interface
- *     </a>
+ * Sample MVP interface
+ * </a>
  */
 public class StateMaintainer {
 
@@ -56,7 +56,8 @@ public class StateMaintainer {
 
     /**
      * Creates the Fragment responsible to maintain the objects.
-     * @return  true: fragment just created
+     *
+     * @return true: fragment just created
      */
     public boolean firstTimeIn() {
         try {
@@ -85,15 +86,19 @@ public class StateMaintainer {
 
     /**
      * Return <strong>true</strong> it the current Activity was recreated at least one time
-     * @return  If the Activity was recreated
+     *
+     * @return If the Activity was recreated
      */
-    public boolean wasRecreated() { return mIsRecreating; }
+    public boolean wasRecreated() {
+        return mIsRecreating;
+    }
 
 
     /**
      * Insert the object to be preserved.
-     * @param key   object's TAG
-     * @param obj   object to maintain
+     *
+     * @param key object's TAG
+     * @param obj object to maintain
      */
     public void put(String key, Object obj) {
         mStateMaintainerFrag.put(key, obj);
@@ -101,7 +106,8 @@ public class StateMaintainer {
 
     /**
      * Insert the object to be preserved.
-     * @param obj   object to maintain
+     *
+     * @param obj object to maintain
      */
     public void put(Object obj) {
         put(obj.getClass().getName(), obj);
@@ -110,20 +116,22 @@ public class StateMaintainer {
 
     /**
      * Recovers the object saved
-     * @param key   Object's TAG
-     * @param <T>   Object type
-     * @return      Object saved
+     *
+     * @param key Object's TAG
+     * @param <T> Object type
+     * @return Object saved
      */
     @SuppressWarnings("unchecked")
-    public <T> T get(String key)  {
+    public <T> T get(String key) {
         return mStateMaintainerFrag.get(key);
 
     }
 
     /**
      * Checks the existence of a given object
-     * @param key   Key to verification
-     * @return      true: Object exists
+     *
+     * @param key Key to verification
+     * @return true: Object exists
      */
     public boolean hasKey(String key) {
         return mStateMaintainerFrag.get(key) != null;
@@ -146,8 +154,9 @@ public class StateMaintainer {
 
         /**
          * Insert objects on the hashmap
-         * @param key   Reference key
-         * @param obj   Object to be saved
+         *
+         * @param key Reference key
+         * @param obj Object to be saved
          */
         public void put(String key, Object obj) {
             mData.put(key, obj);
@@ -155,7 +164,8 @@ public class StateMaintainer {
 
         /**
          * Insert objects on the hashmap
-         * @param object    Object to be saved
+         *
+         * @param object Object to be saved
          */
         public void put(Object object) {
             put(object.getClass().getName(), object);
@@ -163,9 +173,10 @@ public class StateMaintainer {
 
         /**
          * Recovers saved object
-         * @param key   Reference key
-         * @param <T>   Object type
-         * @return      Object saved
+         *
+         * @param key Reference key
+         * @param <T> Object type
+         * @return Object saved
          */
         @SuppressWarnings("unchecked")
         public <T> T get(String key) {

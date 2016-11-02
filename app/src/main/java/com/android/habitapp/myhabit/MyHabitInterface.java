@@ -1,4 +1,4 @@
-package com.android.habitapp.motivational_msg;
+package com.android.habitapp.myhabit;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.habitapp.motivational_msg.view.recycler.NotesViewHolder;
+import com.android.habitapp.myhabit.view.recycler.NotesViewHolder;
 
-public interface AllHabitInterface {
+/**
+ * Created by Hitesh on 10/29/2016.
+ */
 
-    interface AllHabitViewInterfaces {
+public interface MyHabitInterface {
+    interface MyHabitViewInterfaces {
         Context getAppContext();
 
         Context getActivityContext();
@@ -37,10 +40,10 @@ public interface AllHabitInterface {
         void habitlist_success(Cursor data);
     }
 
-    interface AllHabitPresenterInterfaces {
+    interface MyHabitPresenterInterfaces {
         void onDestroy(boolean isChangingConfiguration);
 
-        void setView(AllHabitViewInterfaces view);
+        void setView(MyHabitInterface.MyHabitViewInterfaces view);
 
         NotesViewHolder createViewHolder(ViewGroup parent, int viewType);
 
@@ -53,9 +56,8 @@ public interface AllHabitInterface {
         Context getActivityContext();
     }
 
-    interface AllHabitModelInterfaces {
+    interface MyHabitModelInterfaces {
         void onDestroy(boolean isChangingConfiguration);
-
 
 
         void loadData();

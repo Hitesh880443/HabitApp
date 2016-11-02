@@ -1,11 +1,12 @@
-package com.android.habitapp.motivational_msg.model;
+package com.android.habitapp.myhabit.model;
 
 
-import com.android.habitapp.motivational_msg.AllHabitInterface;
+import com.android.habitapp.habitstore.AllHabitInterface;
+import com.android.habitapp.myhabit.MyHabitInterface;
 
 /**
  * Model layer on Model View Presenter Pattern
- *
+ * <p>
  * ---------------------------------------------------
  * Created by Tin Megali on 18/03/16.
  * Project: tuts+mvp_sample
@@ -14,14 +15,14 @@ import com.android.habitapp.motivational_msg.AllHabitInterface;
  * <a href="http://www.github.com/tinmegali>github</a>
  * ---------------------------------------------------
  */
-public class AllHabitModel  implements AllHabitInterface.AllHabitModelInterfaces {
+public class MyHabitModel implements MyHabitInterface.MyHabitModelInterfaces {
 
     private static final int LOADER_SEARCH_RESULTS = 0;
     // Presenter reference
     private AllHabitInterface.AllHabitPresenterInterfaces mPresenter;
     // Recycler data
 
-    public AllHabitModel(AllHabitInterface.AllHabitPresenterInterfaces presenter) {
+    public MyHabitModel(AllHabitInterface.AllHabitPresenterInterfaces presenter) {
         this.mPresenter = presenter;
     }
 
@@ -48,9 +49,6 @@ public class AllHabitModel  implements AllHabitInterface.AllHabitModelInterfaces
         }
         return -1;
     }*/
-
-
-
 
 
 }

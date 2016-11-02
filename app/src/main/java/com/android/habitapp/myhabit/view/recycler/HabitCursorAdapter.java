@@ -1,16 +1,19 @@
-package com.android.habitapp.motivational_msg.view.recycler;
+package com.android.habitapp.myhabit.view.recycler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.habitapp.R;
+import com.android.habitapp.addHabit.CalenderViewAct;
 import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.extra.Utils;
 
 /**
  * Created by Hitesh on 10/21/2016.
@@ -20,10 +23,13 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
         implements View.OnClickListener {
     private final LayoutInflater layoutInflater;
     private OnItemClickListener onItemClickListener;
+    private Context mContext;
+
 
     public HabitCursorAdapter(final Context context) {
         super();
         this.layoutInflater = LayoutInflater.from(context);
+        this.mContext = context;
     }
 
     public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
@@ -32,7 +38,7 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
 
     @Override
     public HabitViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final View view = this.layoutInflater.inflate(R.layout.row_habit_second, parent, false);
+        final View view = this.layoutInflater.inflate(R.layout.row_my_habit, parent, false);
 //        final View view = this.layoutInflater.inflate(R.layout.row_habit, parent, false);
         view.setOnClickListener(this);
 
@@ -56,30 +62,29 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
         }
     }
 
+    public interface OnItemClickListener {
+        void onItemClicked(Cursor cursor);
+    }
+
     public static class HabitViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, habit_desc;
-        Button btn_start;
+        TextView name, txt_days_value,txt_reminder_value;
 
         public HabitViewHolder(final View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.habit_name);
-            habit_desc = (TextView) itemView.findViewById(R.id.habit_desc);
-            btn_start = (Button) itemView.findViewById(R.id.btn_start);
+            txt_days_value = (TextView) itemView.findViewById(R.id.txt_days_value);
+            txt_reminder_value = (TextView) itemView.findViewById(R.id.txt_reminder_value);
 
         }
 
         public void bindData(final Cursor cursor) {
-            final String name = cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME));
-            final String habit_desc = cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_DESCIPTION));
-            this.name.setText(name);
-            this.habit_desc.setText(habit_desc);
-            if (cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_ID)).equalsIgnoreCase("5"))
-                this.btn_start.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+            final String name = cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_NAME));
+            final String days_comp = cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_DAYS_COMPLETED));
+            final String reminder_time = cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_REMINDER_TIME));
+            this.name.setText(Utils.setFirstltrCapitcal(name));
+            this.txt_days_value.setText(" " + days_comp);
+            this.txt_reminder_value.setText(" " + reminder_time);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClicked(Cursor cursor);
     }
 }

@@ -1,10 +1,11 @@
 package com.android.habitapp.network;
 
 import com.android.habitapp.habitstore.beans.HabitsAll;
-import com.android.habitapp.motivational_msg.beans.MsgAll;
+import com.android.habitapp.motive.view.beans.MotivationalParent;
 
 import retrofit.Call;
 import retrofit.http.GET;
+import retrofit.http.Path;
 
 /**
  * Created by Hitesh on 10/21/2016.
@@ -13,11 +14,11 @@ import retrofit.http.GET;
 public interface HabitAppNetworkInterFace {
 
 
-    @GET("getHabits")
-    Call<HabitsAll> getHabits();
+    @GET("getHabits/{taskId}")
+    Call<HabitsAll> getHabits(@Path("taskId") String taskId);
 
-    @GET("getMsg")
-    Call<MsgAll> getMsg();
+    @GET("getMotive/{taskId}")
+    Call<MotivationalParent> getMotive(@Path("taskId") String taskId);
 
 
 }

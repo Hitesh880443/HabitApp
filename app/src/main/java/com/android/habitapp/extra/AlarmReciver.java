@@ -14,8 +14,8 @@ public class AlarmReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(Constants.LOG_TAG + " onReceive", "who started");
-        Intent service_inIntent=new Intent(context,Alarm_service.class);
-        service_inIntent.setData((Uri.parse("custom://"+System.currentTimeMillis())));
+        Intent service_inIntent = new Intent(context, Alarm_service.class);
+        service_inIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
         context.startService(service_inIntent);
     }
 }

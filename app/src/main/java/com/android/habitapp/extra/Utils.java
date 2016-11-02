@@ -36,5 +36,36 @@ public class Utils {
         return prefs.getBoolean(key, false);
     }
 
+    public static String setFirstltrCapitcal(String name) {
+        StringBuilder sb = new StringBuilder(name);
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        return sb.toString();
+    }
 
+
+    public static void saveStringdata(Context mContext, String value, String key) {
+        SharedPreferences prefs = mContext.getSharedPreferences(key, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getStringData(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(key,
+                Context.MODE_PRIVATE);
+        return prefs.getString(key, null);
+    }
+
+    public static void saveIntdata(Context mContext, int value, String key) {
+        SharedPreferences prefs = mContext.getSharedPreferences(key, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, value);
+        editor.commit();
+    }
+
+    public static int getIntData(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(key,
+                Context.MODE_PRIVATE);
+        return prefs.getInt(key, 0);
+    }
 }

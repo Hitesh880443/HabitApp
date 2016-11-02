@@ -17,16 +17,18 @@ import android.text.TextUtils;
 public class HabitContentProvider extends ContentProvider {
 
 
-    private HabitDatabaseHelper dbHelper;
-
     private static final int ALL_HABIT = 1;
     private static final int SINGLE_habit = 2;
+    private static final int MY_HABIT = 3;
+    private static final int MY_SINGLE_habit = 4;
+
+    private static final int MOTIVE_ALL = 5;
+    private static final int MOTIVE_SIGNLE = 6;
     private static final String AUTHORITY = "com.android.habitapp.data.habit.HabitContentProvider";
-
     // create content URIs from the authority by appending path to database table
-    public static final Uri CONTENT_URI =
-            Uri.parse("content://" + AUTHORITY + "/habits");
-
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/habits");
+    public static final Uri CONTENT_URI2 = Uri.parse("content://" + AUTHORITY + "/myhabits");
+    public static final Uri CONTENT_URI3 = Uri.parse("content://" + AUTHORITY + "/motive");
     // a content URI pattern matches content URIs using wildcard characters:
     // *: Matches a string of any valid characters of any length.
     // #: Matches a string of numeric characters of any length.
@@ -36,7 +38,15 @@ public class HabitContentProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, "habits", ALL_HABIT);
         uriMatcher.addURI(AUTHORITY, "habits/#", SINGLE_habit);
+
+        uriMatcher.addURI(AUTHORITY, "myhabits", MY_HABIT);
+        uriMatcher.addURI(AUTHORITY, "myhabits/#", MY_SINGLE_habit);
+
+        uriMatcher.addURI(AUTHORITY, "motive", MOTIVE_ALL);
+        uriMatcher.addURI(AUTHORITY, "motive/#", MOTIVE_SIGNLE);
     }
+
+    private HabitDatabaseHelper dbHelper;
 
     @Override
     public boolean onCreate() {
@@ -51,15 +61,34 @@ public class HabitContentProvider extends ContentProvider {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(HabitDb.TABLE_HABIT);
 
+        String id;
         switch (uriMatcher.match(uri)) {
+
             case ALL_HABIT:
-                //do nothing
+                queryBuilder.setTables(HabitDb.TABLE_HABIT_All);
                 break;
             case SINGLE_habit:
-                String id = uri.getPathSegments().get(1);
+                queryBuilder.setTables(HabitDb.TABLE_HABIT_All);
+                id = uri.getPathSegments().get(1);
                 queryBuilder.appendWhere(HabitDb.HABIT_SR_NO + "=" + id);
+                break;
+            case MY_HABIT:
+                queryBuilder.setTables(HabitDb.TABLE_HABIT_MY);
+                break;
+            case MY_SINGLE_habit:
+                queryBuilder.setTables(HabitDb.TABLE_HABIT_MY);
+                id = uri.getPathSegments().get(1);
+                queryBuilder.appendWhere(HabitDb.MY_HABIT_SR_NO + "=" + id);
+                break;
+
+            case MOTIVE_ALL:
+                queryBuilder.setTables(HabitDb.TABLE_MOTIVE);
+                break;
+            case MOTIVE_SIGNLE:
+                queryBuilder.setTables(HabitDb.TABLE_MOTIVE);
+                id = uri.getPathSegments().get(1);
+                queryBuilder.appendWhere(HabitDb.MOTIVE_SR_NO + "=" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -88,16 +117,38 @@ public class HabitContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        long id = 0;
         switch (uriMatcher.match(uri)) {
             case ALL_HABIT:
-                //do nothing
+                id = db.insert(HabitDb.TABLE_HABIT_All, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case SINGLE_habit:
+                id = db.insert(HabitDb.TABLE_HABIT_All, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case MY_HABIT:
+                id = db.insert(HabitDb.TABLE_HABIT_MY, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case MY_SINGLE_habit:
+                id = db.insert(HabitDb.TABLE_HABIT_MY, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+
+            case MOTIVE_ALL:
+                id = db.insert(HabitDb.TABLE_MOTIVE, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case MOTIVE_SIGNLE:
+                id = db.insert(HabitDb.TABLE_MOTIVE, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        long id = db.insert(HabitDb.TABLE_HABIT, null, contentValues);
-        getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(CONTENT_URI + "/" + id);
+
+        return Uri.parse(uri.toString() + "/" + id);
     }
 
     @Override
@@ -117,7 +168,7 @@ public class HabitContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        int deleteCount = db.delete(HabitDb.TABLE_HABIT, selection, selectionArgs);
+        int deleteCount = db.delete(HabitDb.TABLE_HABIT_All, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return deleteCount;
     }
@@ -139,7 +190,7 @@ public class HabitContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        int updateCount = db.update(HabitDb.TABLE_HABIT, values, selection, selectionArgs);
+        int updateCount = db.update(HabitDb.TABLE_HABIT_All, values, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return updateCount;
     }

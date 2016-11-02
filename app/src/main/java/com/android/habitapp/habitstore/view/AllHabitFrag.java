@@ -54,14 +54,13 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
     //region Variables
     private static final int LOADER_SEARCH_RESULTS = 1;
+    PendingIntent pendingintent;
     private HabitCursorAdapter adapter;
     private Context mContext;
-    PendingIntent pendingintent;
 
     //endregion
 
     //region Views
-
     private RecyclerView rv_habit;
     private RelativeLayout rl_progressbar;
 
@@ -116,6 +115,11 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
+        if (Utils.isNetworkAvailable(mContext)) {
+            /*if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
+                showProgress();*/
+            getData();
+        }
     }
 
     @Override
@@ -156,11 +160,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
         rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
         restratLoader();
-       /* if (Utils.isNetworkAvailable(mContext)) {
-            if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
-                showProgress();
-            getData();
-        }*/
+
 
 
     }
@@ -204,7 +204,8 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
         Retrofit retrofit = RetrofitAPI.getRetrofitClient(Constants.BASE_URL);
         HabitAppNetworkInterFace service = retrofit.create(HabitAppNetworkInterFace.class);
-        Call<HabitsAll> call = service.getHabits();
+        int lastID = Utils.getIntData(mContext, Constants.HABIT_LAST_ID);
+        Call<HabitsAll> call = service.getHabits(String.valueOf(lastID));
         call.enqueue(new Callback<HabitsAll>() {
             @Override
             public void onResponse(Response<HabitsAll> response, Retrofit retrofit) {
@@ -214,7 +215,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
                         ArrayList<HabitSingle> habiitList = data.getHabitList();
                         Log.d("Habit", String.valueOf(data.getHabitList().size()));
-                        deleteRows();
+                        //deleteRows();
                         for (int i = 0; i < habiitList.size(); i++) {
                             HabitSingle single = habiitList.get(i);
 
@@ -225,19 +226,23 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
                             values.put(HabitDb.HABIT_USERS, single.getHabit_users());
 
                             Log.d("Habit INSERT", String.valueOf(mContext.getContentResolver().insert(HabitContentProvider.CONTENT_URI, values)));
+                            if (i == habiitList.size() - 1) {
+                                Utils.saveIntdata(mContext, Integer.parseInt(single.getHabit_id()), Constants.HABIT_LAST_ID);
+                                Log.d(Constants.HABIT_LAST_ID, String.valueOf(Utils.getIntData(mContext, Constants.HABIT_LAST_ID)));
+                            }
 
                         }
                         Utils.saveBoolean(mContext, Constants.FIRST_RUN, true);
-                        stopProgress();
+                        //stopProgress();
                         restratLoader();
 
                     } else {
                         Log.d("Habit", "0");
-                        stopProgress();
+                        // stopProgress();
                     }
                 } else {
                     Log.d("Habit", "0" + response.message());
-                    stopProgress();
+                    //stopProgress();
                 }
             }
 

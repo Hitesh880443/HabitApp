@@ -1,4 +1,4 @@
-package com.android.habitapp.motivational_msg.view;
+package com.android.habitapp.motive.view;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -34,9 +34,11 @@ import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;
-import com.android.habitapp.motivational_msg.beans.MsgSingle;
-import com.android.habitapp.motivational_msg.beans.MsgAll;
-import com.android.habitapp.motivational_msg.view.recycler.HabitCursorAdapter;
+import com.android.habitapp.habitstore.beans.HabitSingle;
+import com.android.habitapp.habitstore.beans.HabitsAll;
+import com.android.habitapp.motive.view.beans.MotivationalMsg;
+import com.android.habitapp.motive.view.beans.MotivationalParent;
+import com.android.habitapp.motive.view.recycler.MotiveCursorAdapter;
 import com.android.habitapp.network.HabitAppNetworkInterFace;
 import com.android.habitapp.network.RetrofitAPI;
 
@@ -49,19 +51,18 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class MotivationFrag extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MotiveFrag extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     //region Variables
     private static final int LOADER_SEARCH_RESULTS = 1;
-    private HabitCursorAdapter adapter;
-    private Context mContext;
     PendingIntent pendingintent;
+    private MotiveCursorAdapter adapter;
+    private Context mContext;
 
     //endregion
 
     //region Views
-
     private RecyclerView rv_habit;
     private RelativeLayout rl_progressbar;
 
@@ -116,6 +117,11 @@ public class MotivationFrag extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
+        if (Utils.isNetworkAvailable(mContext)) {
+            /*if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
+                showProgress();*/
+            getData();
+        }
     }
 
     @Override
@@ -135,19 +141,13 @@ public class MotivationFrag extends Fragment implements LoaderManager.LoaderCall
         rl_progressbar = (RelativeLayout) view.findViewById(R.id.rl_progressbar);
         rv_habit = (RecyclerView) view.findViewById(R.id.rv_habit);
         rv_habit.setHasFixedSize(true);
-        adapter = new HabitCursorAdapter(getActivity());
-        adapter.setOnItemClickListener(new HabitCursorAdapter.OnItemClickListener() {
+        adapter = new MotiveCursorAdapter(getActivity());
+        adapter.setOnItemClickListener(new MotiveCursorAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Cursor cursor) {
                 //Toast.makeText(mContext, cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME)), Toast.LENGTH_SHORT).show();
                 // showHabit(cursor);
-
-                Intent addHabit = new Intent(mContext, HabitSettingActivity.class);
-                String rowId = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
-                Bundle bundle = new Bundle();
-                bundle.putString("rowId", rowId);
-                addHabit.putExtras(bundle);
-                mContext.startActivity(addHabit);
+                Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -155,11 +155,7 @@ public class MotivationFrag extends Fragment implements LoaderManager.LoaderCall
 
         rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
         restratLoader();
-       /* if (Utils.isNetworkAvailable(mContext)) {
-            if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
-                showProgress();
-            getData();
-        }*/
+
 
 
     }
@@ -169,8 +165,8 @@ public class MotivationFrag extends Fragment implements LoaderManager.LoaderCall
         switch (id) {
             case LOADER_SEARCH_RESULTS:
 
-                final Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI));
-                return new CursorLoader(mContext, uri, null, null, null, null);
+                final Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI3));
+                return new CursorLoader(mContext, uri, null, null, null, HabitDb.MOTIVE_ID+" DESC");
         }
 
         return null;
@@ -203,40 +199,45 @@ public class MotivationFrag extends Fragment implements LoaderManager.LoaderCall
 
         Retrofit retrofit = RetrofitAPI.getRetrofitClient(Constants.BASE_URL);
         HabitAppNetworkInterFace service = retrofit.create(HabitAppNetworkInterFace.class);
-        Call<MsgAll> call = service.getMsg();
-        call.enqueue(new Callback<MsgAll>() {
+        int lastID = Utils.getIntData(mContext, Constants.MOTIVELAST);
+        Call<MotivationalParent> call = service.getMotive(String.valueOf(lastID));
+        call.enqueue(new Callback<MotivationalParent>() {
             @Override
-            public void onResponse(Response<MsgAll> response, Retrofit retrofit) {
+            public void onResponse(Response<MotivationalParent> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    MsgAll data = response.body();
-                    if (data != null && data.getHabitList() != null && data.getHabitList().size() > 0) {
+                    MotivationalParent data = response.body();
+                    if (data != null && data.getMotiveList() != null && data.getMotiveList().size() > 0) {
 
-                        ArrayList<MsgSingle> habiitList = data.getHabitList();
-                        Log.d("Habit", String.valueOf(data.getHabitList().size()));
-                        deleteRows();
+                        ArrayList<MotivationalMsg> habiitList = data.getMotiveList();
+                        Log.d("Motivate", String.valueOf(data.getMotiveList().size()));
+                        //deleteRows();
                         for (int i = 0; i < habiitList.size(); i++) {
-                            MsgSingle single = habiitList.get(i);
+                            MotivationalMsg single = habiitList.get(i);
 
                             ContentValues values = new ContentValues();
-                            values.put(HabitDb.HABIT_ID, single.getHabit_id());
-                            values.put(HabitDb.HABIT_NAME, single.getHabit_name());
-                            values.put(HabitDb.HABIT_DESCIPTION, single.getHabit_desciption());
-                            values.put(HabitDb.HABIT_USERS, single.getHabit_users());
+                            values.put(HabitDb.MOTIVE_ID, single.getPost_id());
+                            values.put(HabitDb.MOTIVE_MSG, single.getPost_msg());
+                            values.put(HabitDb.MOTIVE_AUTHOR, single.getPost_author());
+                            values.put(HabitDb.MOTIVE_DATE, single.getPost_date());
 
-                            Log.d("Habit INSERT", String.valueOf(mContext.getContentResolver().insert(HabitContentProvider.CONTENT_URI, values)));
+                            Log.d("Motive INSERT", String.valueOf(mContext.getContentResolver().insert(HabitContentProvider.CONTENT_URI3, values)));
+                            if (i == habiitList.size() - 1) {
+                                Utils.saveIntdata(mContext, Integer.parseInt(single.getPost_id()), Constants.MOTIVELAST);
+                                Log.d(Constants.HABIT_LAST_ID, String.valueOf(Utils.getIntData(mContext, Constants.MOTIVELAST)));
+                            }
 
                         }
                         Utils.saveBoolean(mContext, Constants.FIRST_RUN, true);
-                        stopProgress();
+                        //stopProgress();
                         restratLoader();
 
                     } else {
                         Log.d("Habit", "0");
-                        stopProgress();
+                        // stopProgress();
                     }
                 } else {
                     Log.d("Habit", "0" + response.message());
-                    stopProgress();
+                    //stopProgress();
                 }
             }
 
