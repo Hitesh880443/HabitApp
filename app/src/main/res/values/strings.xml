@@ -19,4 +19,6 @@
     <string name="habitName">Give this habit name</string>
     <string name="days_comp">Days completed :</string>
     <string name="remider_lbl">Reminder on :</string>
+    <string name="dummy_reason">Thanks, you are right. but i saw this: Deprecated: </string>
+    <string name="peroforamance">You are on right path</string>
 </resources>

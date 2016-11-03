@@ -110,7 +110,6 @@ public class HabitSettingActivity extends AppCompatActivity {
 
                     if (!habitType.equalsIgnoreCase("store")) {
                         habit_name = et_habit.getText().toString();
-                    } else {
                         habit_id = "-1";
                     }
                     habit_reson = et_habit_desc.getText().toString();

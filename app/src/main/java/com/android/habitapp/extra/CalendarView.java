@@ -254,7 +254,9 @@ public class CalendarView extends LinearLayout
 							eventDate.getYear() == year)
 					{
 						// mark this day for event
-						view.setBackgroundResource(R.drawable.reminder);
+						//view.setBackgroundResource(R.drawable.reminder);
+						view.setBackgroundColor(view.getContext().getResources().getColor(R.color.green));
+						((TextView)view).setTextColor(getResources().getColor(R.color.white));
 						break;
 					}
 				}
