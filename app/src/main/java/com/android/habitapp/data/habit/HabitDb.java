@@ -14,6 +14,7 @@ public class HabitDb {
     public static final String TABLE_HABIT_All = "habits_all";
     public static final String TABLE_HABIT_MY = "habits_my";
     public static final String TABLE_MOTIVE = "motive";
+    public static final String TABLE_DAILY_ENREY = "table_daily_enrey";
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "habitApp.db";
     private static final String COMMA_SPACE = ", ";
@@ -57,6 +58,7 @@ public class HabitDb {
     public static final String MY_HABIT_START_DATE = "MY_HABIT_START_DATE";
     public static final String MY_HABIT_REMINDER_TIME = "MY_HABIT_REMINDER_TIME";
     public static final String MY_HABIT_REMINDER_STATUS = "MY_HABIT_REMINDER_STATUS";
+    public static final String MY_HABIT_TODAY_STATUS = "my_habit_today_status";
 
 
     private static final String CREATE_TABLE_HABIT_MY =
@@ -68,7 +70,25 @@ public class HabitDb {
                     MY_HABIT_DAYS_COMPLETED + TYPE_INT + NOT_NULL + COMMA_SPACE +
                     MY_HABIT_START_DATE + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
                     MY_HABIT_REMINDER_TIME + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
-                    MY_HABIT_REMINDER_STATUS + TYPE_TEXT + NOT_NULL +
+                    MY_HABIT_REMINDER_STATUS + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
+                    MY_HABIT_TODAY_STATUS + TYPE_INT + NOT_NULL +
+                    ")";
+
+    //endregion
+
+    // region MyHabit Daily Data Column
+    public static final String MY_DAILY_SR_NO = "MY_DAILY_SR_NO";
+    public static final String MY_DAILY_HABIT_ID = "MY_DAILY_HABIT_ID";
+    public static final String MY_DAILY__DATE = "MY_DAILY__DATE";
+    public static final String MY_DAILY_TIME = "MY_DAILY_TIME";
+
+
+    private static final String CREATE_TABLE_DAILY_ENREY =
+            CREATE_TABLE + TABLE_DAILY_ENREY + " ( " +
+                    MY_DAILY_SR_NO + TYPE_INT + NOT_NULL + PRIMARY_KEY + AUTOINCREMENT + COMMA_SPACE +
+                    MY_DAILY_HABIT_ID + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
+                    MY_DAILY__DATE + TYPE_TEXT + NOT_NULL + COMMA_SPACE +
+                    MY_DAILY_TIME + TYPE_TEXT + NOT_NULL +
                     ")";
 
     //endregion
@@ -102,6 +122,9 @@ public class HabitDb {
 
         Log.w(DB_NAME, CREATE_TABLE_MOTIVE);
         db.execSQL(CREATE_TABLE_MOTIVE);
+
+        Log.w(DB_NAME, CREATE_TABLE_DAILY_ENREY);
+        db.execSQL(CREATE_TABLE_DAILY_ENREY);
     }
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

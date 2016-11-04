@@ -23,13 +23,25 @@
             app:cpv_indeterminate="true" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_todays_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:textColor="@color/red"
+        android:text="12/12/2015" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_habit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingTop="10dp"></android.support.v7.widget.RecyclerView>
+
+
+        ></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

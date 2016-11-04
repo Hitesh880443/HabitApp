@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Hitesh on 10/21/2016.
  */
@@ -67,5 +71,15 @@ public class Utils {
         SharedPreferences prefs = context.getSharedPreferences(key,
                 Context.MODE_PRIVATE);
         return prefs.getInt(key, 0);
+    }
+
+    public static Date truncateToDay(Date date) {
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
     }
 }

@@ -177,21 +177,36 @@ public class HabitContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String id;
+        int updateCount = -5;
         switch (uriMatcher.match(uri)) {
             case ALL_HABIT:
                 //do nothing
                 break;
             case SINGLE_habit:
-                String id = uri.getPathSegments().get(1);
+                id = uri.getPathSegments().get(1);
                 selection = HabitDb.HABIT_ID + "=" + id
                         + (!TextUtils.isEmpty(selection) ?
                         " AND (" + selection + ')' : "");
                 break;
+
+            case MY_HABIT:
+
+                updateCount = db.update(HabitDb.TABLE_HABIT_MY, values, null, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case MY_SINGLE_habit:
+                id = uri.getPathSegments().get(1);
+                selection = HabitDb.MY_HABIT_SR_NO + "=" + id
+                        + (!TextUtils.isEmpty(selection) ?
+                        " AND (" + selection + ')' : "");
+                updateCount = db.update(HabitDb.TABLE_HABIT_MY, values, selection, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        int updateCount = db.update(HabitDb.TABLE_HABIT_All, values, selection, selectionArgs);
-        getContext().getContentResolver().notifyChange(uri, null);
+
         return updateCount;
     }
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class HabitSettingActivity extends AppCompatActivity {
     //region Variables
     private String habit_id, habit_name, habit_desciption, habit_reson, id, habitType, reminderTime;
     private String globalTime = null;
+    private Context mContext;
     //endregion
 
     //region Views
@@ -53,7 +55,7 @@ public class HabitSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_setting);
-
+        mContext = this;
         Bundle bundle = this.getIntent().getExtras();
 
         habitType = bundle.getString("habitType");
@@ -80,77 +82,89 @@ public class HabitSettingActivity extends AppCompatActivity {
 
     //region setViews
     private void setUpView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
 
-        tv_habitdec = (TextView) findViewById(R.id.tv_habitdec);
-        et_habit_desc = (EditText) findViewById(R.id.et_habit_desc);
-        et_habit = (EditText) findViewById(R.id.et_habit);
-        et_date = (EditText) findViewById(R.id.et_date);
-        et_time = (EditText) findViewById(R.id.et_time);
-        btn = (Button) findViewById(R.id.button);
-        ll_own_habit = (LinearLayout) findViewById(R.id.ll_own_habit);
-        if (habitType.equalsIgnoreCase("store")) {
-            ll_own_habit.setVisibility(View.GONE);
-            tv_habitdec.setVisibility(View.VISIBLE);
-        } else {
-            ll_own_habit.setVisibility(View.VISIBLE);
-            tv_habitdec.setVisibility(View.GONE);
-        }
+        try {
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            tv_habitdec = (TextView) findViewById(R.id.tv_habitdec);
+            et_habit_desc = (EditText) findViewById(R.id.et_habit_desc);
+            et_habit = (EditText) findViewById(R.id.et_habit);
+            et_date = (EditText) findViewById(R.id.et_date);
+            et_time = (EditText) findViewById(R.id.et_time);
+            btn = (Button) findViewById(R.id.button);
+            ll_own_habit = (LinearLayout) findViewById(R.id.ll_own_habit);
+            if (habitType.equalsIgnoreCase("store")) {
+                ll_own_habit.setVisibility(View.GONE);
+                tv_habitdec.setVisibility(View.VISIBLE);
+            } else {
+                ll_own_habit.setVisibility(View.VISIBLE);
+                tv_habitdec.setVisibility(View.GONE);
+            }
 
-                try {
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+                        if (!habitType.equalsIgnoreCase("store")) {
+                            habit_name = et_habit.getText().toString();
+                            habit_id = "-1";
+                        }
+                        habit_reson = et_habit_desc.getText().toString();
+                        reminderTime = et_time.getText().toString();
+
+                        if (!TextUtils.isEmpty(habit_name) && !TextUtils.isEmpty(habit_reson) && !TextUtils.isEmpty(et_time.getText().toString())) {
 
 
-                    if (!habitType.equalsIgnoreCase("store")) {
-                        habit_name = et_habit.getText().toString();
-                        habit_id = "-1";
+                            ContentValues values = new ContentValues();
+                            values.put(HabitDb.MY_HABIT_ID, habit_id);
+                            values.put(HabitDb.MY_HABIT_NAME, habit_name);
+                            values.put(HabitDb.MY_HABIT_REASON, habit_reson);
+                            values.put(HabitDb.MY_HABIT_DAYS_COMPLETED, 0);
+                            values.put(HabitDb.MY_HABIT_START_DATE, String.valueOf(new Date()));
+                            values.put(HabitDb.MY_HABIT_REMINDER_TIME, reminderTime);
+                            values.put(HabitDb.MY_HABIT_REMINDER_STATUS, "Y");
+                            values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
+                            Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI2, values)));
+                            Toast.makeText(HabitSettingActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(mContext, mContext.getResources().getString(R.string.all_mandatrity), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    habit_reson = et_habit_desc.getText().toString();
-                    reminderTime = et_time.getText().toString();
-                    ContentValues values = new ContentValues();
-                    values.put(HabitDb.MY_HABIT_ID, habit_id);
-                    values.put(HabitDb.MY_HABIT_NAME, habit_name);
-                    values.put(HabitDb.MY_HABIT_REASON, habit_reson);
-                    values.put(HabitDb.MY_HABIT_DAYS_COMPLETED, 0);
-                    values.put(HabitDb.MY_HABIT_START_DATE, String.valueOf(new Date()));
-                    values.put(HabitDb.MY_HABIT_REMINDER_TIME, et_time.getText().toString());
-                    values.put(HabitDb.MY_HABIT_REMINDER_STATUS, "Y");
-                    Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI2, values)));
-                    Toast.makeText(HabitSettingActivity.this, "Done", Toast.LENGTH_SHORT).show();
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+
                 }
+            });
 
-
-            }
-        });
-
-        et_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
-                newFragment.show(getSupportFragmentManager(), "timePicker");
-            }
-        });
-
-        et_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+            et_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
                     newFragment.show(getSupportFragmentManager(), "timePicker");
-
                 }
-            }
-        });
+            });
+
+            et_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
+                        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

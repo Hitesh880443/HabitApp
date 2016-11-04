@@ -43,7 +43,7 @@ public interface MyHabitInterface {
     interface MyHabitPresenterInterfaces {
         void onDestroy(boolean isChangingConfiguration);
 
-        void setView(MyHabitInterface.MyHabitViewInterfaces view);
+        void setView(MyHabitViewInterfaces view);
 
         NotesViewHolder createViewHolder(ViewGroup parent, int viewType);
 

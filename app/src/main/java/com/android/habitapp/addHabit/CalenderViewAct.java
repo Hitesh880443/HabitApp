@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -87,6 +87,14 @@ public class CalenderViewAct extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.individual_habit, menu);
+        return true;
+    }
+
+
     //endregion
 
     private void loadData(String id) {
@@ -125,10 +133,10 @@ public class CalenderViewAct extends AppCompatActivity {
                 String str = null;
 
 
-                    date = inputFormat.parse(habit_date);
-                    str = outputFormat.format(date);
+                date = inputFormat.parse(habit_date);
+                str = outputFormat.format(date);
 
-                    Log.i("mini", "Converted Date Today:" + str);
+                Log.i("mini", "Converted Date Today:" + str);
 
                 tv_reason.setText(habit_reason);
                 tv_startDate.setText(str);
@@ -150,6 +158,19 @@ public class CalenderViewAct extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
             finish();
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.delete:
+                Toast.makeText(this, "Delete call", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.edit:
+                Toast.makeText(this, "Edit call", Toast.LENGTH_SHORT).show();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

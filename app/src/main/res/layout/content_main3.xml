@@ -71,6 +71,7 @@
                 android:background="@drawable/round_corner_shape"
                 android:hint="Habit Name"
                 android:lines="1"
+                android:maxLines="1"
                 android:padding="10dp" />
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.android.habitapp.myhabit.view;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,9 +32,14 @@ import com.android.habitapp.addHabit.CalenderViewAct;
 import com.android.habitapp.data.habit.HabitContentProvider;
 import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
+import com.android.habitapp.extra.Constants;
+import com.android.habitapp.extra.Utils;
 import com.android.habitapp.myhabit.view.recycler.HabitCursorAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -44,6 +50,9 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     PendingIntent pendingintent;
     private HabitCursorAdapter adapter;
     private Context mContext;
+    private Date currDate, saveDate;
+    private Date todaysDate;
+    private TextView tv_todays_date;
 
     //endregion
 
@@ -59,8 +68,37 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
 
+        try {
+
+
+            mContext = getActivity();
+            currDate = Utils.truncateToDay(new Date());
+            Log.d("Date Current", currDate.toString());
+
+            if (Utils.getStringData(mContext, Constants.TODAYS_DATE) != null) {
+                DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+                Date date = (Date) formatter.parse(Utils.getStringData(mContext, Constants.TODAYS_DATE));
+                date = Utils.truncateToDay(date);
+                Log.d("Date Current", date.toString());
+                if (currDate.after(date)) {
+                    Log.d("Yo", "After");
+                    Utils.saveStringdata(mContext,String.valueOf(currDate.toString()), Constants.TODAYS_DATE);
+                    Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, true);
+
+                    updateDate();
+
+                }
+
+
+            } else {
+                Log.d("Saved  Date", "First Launch");
+                Utils.saveStringdata(mContext, String.valueOf(currDate.toString()), Constants.TODAYS_DATE);
+                Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -121,6 +159,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     //region setViews
     private void setupViews(View view) {
         rl_progressbar = (RelativeLayout) view.findViewById(R.id.rl_progressbar);
+        tv_todays_date = (TextView) view.findViewById(R.id.tv_todays_date);
         rv_habit = (RecyclerView) view.findViewById(R.id.rv_habit);
         rv_habit.setHasFixedSize(true);
         adapter = new HabitCursorAdapter(getActivity());
@@ -141,12 +180,20 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
 
         rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-       /* if (Utils.isNetworkAvailable(mContext)) {
-            if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
-                showProgress();
-            getData();
-        }*/
+        Date date=new Date();
+        if (date != null) {
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss aa");
+            SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateV = null;
+            String newDateStr = null, newTimeStr = null;
+            try {
+                newDateStr = DateFormat.getDateInstance().format(date);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tv_todays_date.setText(newDateStr);
+        }
 
     }
 
@@ -166,7 +213,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_SEARCH_RESULTS:
-                adapter.swapCursor(data);
+                adapter.swapCursor(data, mContext);
                 break;
         }
     }
@@ -175,7 +222,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_SEARCH_RESULTS:
-                adapter.swapCursor(null);
+                adapter.swapCursor(null, mContext);
                 break;
         }
     }
@@ -267,6 +314,26 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
         dialog.show();
     }
 
+    public void updateDate() {
+        try {
+            //if (getItemCount() > 0) {
+                if (Utils.getBoolean(mContext, Constants.UPDATE_TASK_LIST)) {
+                    ContentValues values = new ContentValues();
+                    values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
+                    //id=cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_SR_NO));
+                    Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI2));
+                    int result = mContext.getContentResolver().update(uri, values, null, null);
+                    if (result > 0) {
+                        Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, false);
+                    }
+                }
+            //}
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 //endregion
 
