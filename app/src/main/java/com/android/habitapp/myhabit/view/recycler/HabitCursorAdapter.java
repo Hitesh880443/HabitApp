@@ -133,7 +133,7 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
             iv_taskDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Wooo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Todays task done", Toast.LENGTH_SHORT).show();
                     ContentValues myDalyvalue = new ContentValues();
                     myDalyvalue.put(HabitDb.MY_DAILY_HABIT_ID, id);
                     myDalyvalue.put(HabitDb.MY_DAILY__DATE, String.valueOf(new Date()));

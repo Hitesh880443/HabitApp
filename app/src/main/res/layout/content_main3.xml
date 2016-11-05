@@ -22,6 +22,7 @@
         android:background="@color/colorAccent"
         android:elevation="0dp"
         android:text="@string/set_habit"
+        android:contentDescription="@string/save_habit"
         android:textAppearance="@style/Titles"
         android:textColor="@color/white" />
 
@@ -72,6 +73,7 @@
                 android:hint="Habit Name"
                 android:lines="1"
                 android:maxLines="1"
+                android:contentDescription="@string/et_habit"
                 android:padding="10dp" />
         </LinearLayout>
 
@@ -96,6 +98,7 @@
             android:hint="Reason"
             android:inputType="textMultiLine"
             android:maxLines="3"
+            android:contentDescription="@string/et_habit_desc"
             android:padding="10dp" />
 
         <EditText
@@ -108,6 +111,8 @@
             android:hint="10/10/2016"
             android:inputType="textPersonName"
             android:lines="1"
+            android:contentDescription="@string/date"
+
             android:padding="10dp"
             android:visibility="gone" />
 
@@ -131,6 +136,8 @@
             android:editable="false"
             android:hint="HH : MM"
             android:lines="1"
+            android:contentDescription="@string/et_time"
+
             android:padding="10dp" />
 
     </LinearLayout>

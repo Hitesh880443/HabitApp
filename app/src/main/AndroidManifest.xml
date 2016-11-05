@@ -13,6 +13,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -58,14 +59,25 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+
         <service
-            android:name=".myhabit.reminder.NotificationIntentService2"
+            android:name=".widget.WidgetService"
             android:enabled="true"
             android:exported="false"
             android:process=":remote" />
 
-        <service
-            android:name=".widget.WidgetService"
+        <receiver android:name=".widget.HabitAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+      <!--  <service
+            android:name=".myhabit.reminder.NotificationIntentService2"
             android:enabled="true"
             android:exported="false"
             android:process=":remote" />
@@ -80,16 +92,8 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
-        </receiver>
-        <receiver android:name=".widget.HabitAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
+        </receiver>-->
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/new_app_widget_info" />
-        </receiver>
     </application>
 
 </manifest>

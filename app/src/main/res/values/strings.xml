@@ -15,10 +15,10 @@
     <string name="title_activity_main3">Adding New Habit</string>
     <string name="set_habit">SET MY HABIT</string>
     <string name="reson">Reason for doing this habit</string>
-    <string name="reminderTime">Set reminder time</string>
+    <string name="reminderTime">Set Habit time</string>
     <string name="habitName">Give this habit name</string>
     <string name="days_comp">Days completed :</string>
-    <string name="remider_lbl">Reminder on :</string>
+    <string name="remider_lbl">Habit on :</string>
     <string name="dummy_reason">Thanks, you are right. but i saw this: Deprecated: </string>
     <string name="peroforamance_good">You are on right path</string>
     <string name="peroforamance_bad">You are not  on right path</string>
@@ -30,4 +30,11 @@
     <string name="appwidget_text">No Habit remain for Today</string>
     <string name="add_widget">Add widget</string>
     <string name="nextHabit">My Next Habit</string>
+    <string name="add_habit" >Add My Own habit</string>
+    <string name="et_habit">Enter Habit name</string>
+    <string name="et_habit_desc">Enter Habit Reason</string>
+    <string name="date">Date</string>
+    <string name="et_time">Set Habit Time</string>
+    <string name="save_habit">Click to save habit Detail</string>
+    <string name="delete_habit">Delete habit</string>
 </resources>

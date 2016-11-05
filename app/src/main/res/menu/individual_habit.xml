@@ -8,6 +8,7 @@
         android:icon="@drawable/delete"
         android:orderInCategory="100"
         android:title="@string/delete"
+        android:contentDescription="@string/delete_habit"
         app:showAsAction="always" />
 
 </menu>
