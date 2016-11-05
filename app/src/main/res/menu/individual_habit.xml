@@ -2,17 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.android.habitapp.MainActivity">
-    <item
-        android:id="@+id/edit"
-        android:icon="@drawable/edit"
-        android:orderInCategory="100"
-        android:title="@string/edit"
-        app:showAsAction="never" />
+
     <item
         android:id="@+id/delete"
         android:icon="@drawable/delete"
         android:orderInCategory="100"
         android:title="@string/delete"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
 </menu>

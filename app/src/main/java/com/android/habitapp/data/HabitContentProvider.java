@@ -182,20 +182,45 @@ public class HabitContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String id;
+        int deleteCount = 0;
         switch (uriMatcher.match(uri)) {
             case ALL_HABIT:
                 //do nothing
                 break;
             case SINGLE_habit:
-                String id = uri.getPathSegments().get(1);
+                id = uri.getPathSegments().get(1);
                 selection = HabitDb.HABIT_ID + "=" + id
                         + (!TextUtils.isEmpty(selection) ?
                         " AND (" + selection + ')' : "");
+                deleteCount = db.delete(HabitDb.TABLE_HABIT_All, selection, selectionArgs);
+                break;
+
+            case MY_HABIT:
+                //do nothing
+                break;
+            case MY_SINGLE_habit:
+                id = uri.getPathSegments().get(1);
+                selection = HabitDb.MY_HABIT_SR_NO + "=" + id
+                        + (!TextUtils.isEmpty(selection) ?
+                        " AND (" + selection + ')' : "");
+                deleteCount = db.delete(HabitDb.TABLE_HABIT_MY, selection, selectionArgs);
+                break;
+
+            case DAILY_ALL:
+                //do nothing
+                break;
+            case DAILY_SIGNLE:
+                id = uri.getPathSegments().get(1);
+                selection = HabitDb.MY_DAILY_HABIT_ID + "=" + id
+                        + (!TextUtils.isEmpty(selection) ?
+                        " AND (" + selection + ')' : "");
+                deleteCount = db.delete(HabitDb.TABLE_DAILY_ENREY, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        int deleteCount = db.delete(HabitDb.TABLE_HABIT_All, selection, selectionArgs);
+
         getContext().getContentResolver().notifyChange(uri, null);
         return deleteCount;
     }

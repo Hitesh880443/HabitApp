@@ -27,4 +27,7 @@
     <string name="delete">Delete Habit</string>
     <string name="edit">Edit Habit</string>
     <string name="all_mandatrity">All fields are mandatory</string>
+    <string name="appwidget_text">No Habit remain for Today</string>
+    <string name="add_widget">Add widget</string>
+    <string name="nextHabit">My Next Habit</string>
 </resources>

@@ -205,8 +205,6 @@ public class HabitSettingActivity extends AppCompatActivity {
             habit_name = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_NAME));
             habit_desciption = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_DESCIPTION));
             habit_users = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_USERS));
-
-
             actionBar.setTitle(habit_name);
             tv_habitdec.setText(habit_desciption);
         }

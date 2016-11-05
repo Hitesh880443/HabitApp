@@ -34,9 +34,6 @@ public class SpashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_spash_screen);
         mContext = this;
 
-       /* if (Utils.isNetworkAvailable(mContext))
-            getData();
-        else {*/
             Thread timerThread = new Thread() {
                 public void run() {
                     try {
@@ -49,7 +46,6 @@ public class SpashScreen extends AppCompatActivity {
                 }
             };
             timerThread.start();
-        //}
     }
 
     @Override
@@ -59,58 +55,7 @@ public class SpashScreen extends AppCompatActivity {
         finish();
     }
 
-    public void getData() {
 
-        Retrofit retrofit = RetrofitAPI.getRetrofitClient(Constants.BASE_URL);
-        HabitAppNetworkInterFace service = retrofit.create(HabitAppNetworkInterFace.class);
-        Call<HabitsAll> call = service.getHabits("0");
-        call.enqueue(new Callback<HabitsAll>() {
-            @Override
-            public void onResponse(Response<HabitsAll> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    HabitsAll data = response.body();
-                    if (data != null && data.getHabitList() != null && data.getHabitList().size() > 0) {
-
-                        ArrayList<HabitSingle> habiitList = data.getHabitList();
-                        Log.d("Habit", String.valueOf(data.getHabitList().size()));
-                        deleteRows();
-                        for (int i = 0; i < habiitList.size(); i++) {
-                            HabitSingle single = habiitList.get(i);
-
-                            ContentValues values = new ContentValues();
-                            values.put(HabitDb.HABIT_ID, single.getHabit_id());
-                            values.put(HabitDb.HABIT_NAME, single.getHabit_name());
-                            values.put(HabitDb.HABIT_DESCIPTION, single.getHabit_desciption());
-                            values.put(HabitDb.HABIT_USERS, single.getHabit_users());
-
-                            Log.d("Habit INSERT", String.valueOf(mContext.getContentResolver().insert(HabitContentProvider.CONTENT_URI, values)));
-
-                        }
-                        //Utils.saveBoolean(mContext, Constants.FIRST_RUN, true);
-                        jumpToMainActivity();
-
-                    } else {
-                        Log.d("Habit", "0");
-                        jumpToMainActivity();
-                    }
-                } else {
-                    Log.d("Habit", "0" + response.message());
-                    jumpToMainActivity();
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.d("Habit", "0" + t.getMessage());
-                jumpToMainActivity();
-            }
-        });
-
-    }
-
-    public void deleteRows() {
-        Log.d("Habit delete", String.valueOf(mContext.getContentResolver().delete(HabitContentProvider.CONTENT_URI, null, null)));
-    }
 
     public void jumpToMainActivity() {
         Intent intent = new Intent(SpashScreen.this, MainActivity.class);

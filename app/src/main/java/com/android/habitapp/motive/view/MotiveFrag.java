@@ -133,23 +133,29 @@ public class MotiveFrag extends Fragment implements LoaderManager.LoaderCallback
 
     //region setViews
     private void setupViews(View view) {
-        rl_progressbar = (RelativeLayout) view.findViewById(R.id.rl_progressbar);
-        rv_habit = (RecyclerView) view.findViewById(R.id.rv_habit);
-        rv_habit.setHasFixedSize(true);
-        adapter = new MotiveCursorAdapter(getActivity());
-        adapter.setOnItemClickListener(new MotiveCursorAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(Cursor cursor) {
-                //Toast.makeText(mContext, cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME)), Toast.LENGTH_SHORT).show();
-                // showHabit(cursor);
-                Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
 
-            }
-        });
-        rv_habit.setAdapter(adapter);
+        try{
+            rl_progressbar = (RelativeLayout) view.findViewById(R.id.rl_progressbar);
+            rv_habit = (RecyclerView) view.findViewById(R.id.rv_habit);
+            rv_habit.setHasFixedSize(true);
+            adapter = new MotiveCursorAdapter(getActivity());
+            adapter.setOnItemClickListener(new MotiveCursorAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClicked(Cursor cursor) {
+                    //Toast.makeText(mContext, cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME)), Toast.LENGTH_SHORT).show();
+                    // showHabit(cursor);
 
-        rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
-        restratLoader();
+
+                }
+            });
+            rv_habit.setAdapter(adapter);
+
+            rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
+            restratLoader();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
 

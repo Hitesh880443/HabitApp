@@ -1,6 +1,7 @@
 package com.android.habitapp.addHabit;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -74,12 +76,9 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
                 finish();
                 break;
             case R.id.delete:
-                Toast.makeText(this, "Delete call", Toast.LENGTH_SHORT).show();
+                deleteHabit(habit_sr_no);
                 break;
 
-            case R.id.edit:
-                Toast.makeText(this, "Edit call", Toast.LENGTH_SHORT).show();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -139,8 +138,6 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
 
-
-
     //endregion
 
     //region LocalMeothos
@@ -187,13 +184,30 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
 
                 tv_reason.setText(habit_reason);
                 tv_startDate.setText(str);
-                tv_reminder.setText(habit_time);
-                tv_days.setText(habit_days_comp);
-                // tv_progress.setText(habit_days_comp);
 
+                Log.d("AAAA", habit_name);
+                String[] toppings = new String[2];
+                toppings = habit_time.split(":");
+
+                int savedHr = Integer.parseInt(toppings[0]);
+                int savedMin = Integer.parseInt(toppings[1]);
+
+
+                String convention = null;
+                if (savedHr > 12) {
+                    savedHr = savedHr - 12;
+                    convention = "PM";
+                } else {
+                    convention = "AM";
+                }
+                String latest_habit_time = String.valueOf((savedHr < 10) ? "0" + savedHr : savedHr) + ":" + String.valueOf((savedMin < 10) ? "0" + savedMin : savedMin) + " " + convention;
+
+                tv_reminder.setText(latest_habit_time);
                 restratLoader();
 
             }
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -211,8 +225,8 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
                 try {
                     long diff = Math.round((new Date().getTime() - startdate.getTime()) / (double) 86400000);
                     float percentage = (cursor.getCount() / diff) * 100;
-                    if (percentage > 80) {
-                        tv_progress.setText(context.getResources().getString(R.string.peroforamance_good));
+                    if (percentage > 50) {
+                        tv_progress.setText( context.getResources().getString(R.string.peroforamance_good));
                         tv_progress.setTextColor(context.getResources().getColor(R.color.green));
 
                     } else {
@@ -244,6 +258,35 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
 
     public void restratLoader() {
         getSupportLoaderManager().initLoader(LOADER_SEARCH_RESULTS, null, this);
+    }
+
+    public void deleteHabit(final String id) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MyHabitDetailActivity.this);
+        alertDialog.setTitle("Confirm Delete...");
+        alertDialog.setMessage("Are you sure you want delete " + habit_name + " habit ?");
+        alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI2 + "/" + id);
+                long result = getContentResolver().delete(uri, null, null);
+                Log.d("Result", String.valueOf(result));
+
+                Uri uri2 = Uri.parse(HabitContentProvider.CONTENT_URI4 + "/" + id);
+                long result2 = getContentResolver().delete(uri, null, null);
+                Log.d("Result", String.valueOf(result));
+                Toast.makeText(getApplicationContext(), habit_name + " deleted successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     //endregion
