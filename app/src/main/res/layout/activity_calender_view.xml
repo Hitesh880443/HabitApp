@@ -174,7 +174,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
-            android:text="@string/peroforamance"
+            android:text="@string/peroforamance_good"
             android:textColor="@color/green"
             android:textSize="16dp" />
 

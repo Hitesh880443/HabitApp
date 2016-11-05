@@ -29,8 +29,8 @@ import android.widget.Toast;
 
 import com.android.habitapp.R;
 import com.android.habitapp.addHabit.HabitSettingActivity;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;

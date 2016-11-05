@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.habitapp.R;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.Utils;
 
 /**

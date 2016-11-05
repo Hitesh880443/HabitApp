@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.CalendarView;
 import com.android.habitapp.extra.Utils;
 
@@ -30,17 +30,29 @@ import java.util.HashSet;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CalenderViewAct extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MyHabitDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    //region Vairables
+
     private static final int LOADER_SEARCH_RESULTS = 3;
     private String habit_id, habit_name, habit_reason, habit_date, habit_sr_no, habit_time, habit_days_comp;
     private ActionBar actionBar;
-    private Toolbar toolbar;
     public String TAG = "Calnder";
-    public CalendarView calendar_view;
-    public TextView tv_reason, tv_startDate, tv_reminder, tv_days, tv_progress;
     private Context context;
+    Date todatsDate, startdate;
     HashSet<Date> events;
 
+    //endregion
+
+    //region Views
+
+    private Toolbar toolbar;
+    public CalendarView calendar_view;
+    public TextView tv_reason, tv_startDate, tv_reminder, tv_days, tv_progress;
+
+    //endregion
+
+    //region Lifecyle and Acitivity methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +64,39 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
         loadData(habit_sr_no);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.delete:
+                Toast.makeText(this, "Delete call", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.edit:
+                Toast.makeText(this, "Edit call", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.individual_habit, menu);
+        return true;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    //endregion
 
     //region setUpView
     private void setUpView() {
@@ -81,7 +126,7 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
             public void onDayLongPress(Date date) {
                 // show returned day
                 DateFormat df = SimpleDateFormat.getDateInstance();
-                Toast.makeText(CalenderViewAct.this, df.format(date), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyHabitDetailActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -93,16 +138,12 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.individual_habit, menu);
-        return true;
-    }
+
 
 
     //endregion
 
+    //region LocalMeothos
     private void loadData(String id) {
 
         try {
@@ -135,12 +176,12 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
                 SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                 SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 
-                Date date = null;
+
                 String str = null;
 
 
-                date = inputFormat.parse(habit_date);
-                str = outputFormat.format(date);
+                startdate = inputFormat.parse(habit_date);
+                str = outputFormat.format(startdate);
 
                 Log.i("mini", "Converted Date Today:" + str);
 
@@ -149,7 +190,6 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
                 tv_reminder.setText(habit_time);
                 tv_days.setText(habit_days_comp);
                 // tv_progress.setText(habit_days_comp);
-
 
                 restratLoader();
 
@@ -163,36 +203,27 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-            finish();
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            case R.id.delete:
-                Toast.makeText(this, "Delete call", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.edit:
-                Toast.makeText(this, "Edit call", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
     public void dailyData(Cursor cursor) {
         try {
             if (cursor != null) {
 
-                tv_days.setText(cursor.getCount()+" days");
+                tv_days.setText(cursor.getCount() + " days");
+                try {
+                    long diff = Math.round((new Date().getTime() - startdate.getTime()) / (double) 86400000);
+                    float percentage = (cursor.getCount() / diff) * 100;
+                    if (percentage > 80) {
+                        tv_progress.setText(context.getResources().getString(R.string.peroforamance_good));
+                        tv_progress.setTextColor(context.getResources().getColor(R.color.green));
+
+                    } else {
+                        tv_progress.setText(context.getResources().getString(R.string.peroforamance_bad));
+                        tv_progress.setTextColor(context.getResources().getColor(R.color.red));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 while (cursor.moveToNext()) {
                     final String dateString = cursor.getString(cursor.getColumnIndex(HabitDb.MY_DAILY__DATE));
                     DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
@@ -215,6 +246,9 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
         getSupportLoaderManager().initLoader(LOADER_SEARCH_RESULTS, null, this);
     }
 
+    //endregion
+
+    //region Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -245,4 +279,6 @@ public class CalenderViewAct extends AppCompatActivity implements LoaderManager.
                 break;
         }
     }
+
+    //endregion
 }

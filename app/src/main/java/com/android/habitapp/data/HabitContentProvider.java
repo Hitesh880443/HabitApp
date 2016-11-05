@@ -1,4 +1,4 @@
-package com.android.habitapp.data.habit;
+package com.android.habitapp.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -29,7 +29,7 @@ public class HabitContentProvider extends ContentProvider {
     private static final int DAILY_ALL = 7;
     private static final int DAILY_SIGNLE = 8;
 
-    private static final String AUTHORITY = "com.android.habitapp.data.habit.HabitContentProvider";
+    private static final String AUTHORITY = "com.android.habitapp.data.HabitContentProvider";
     // create content URIs from the authority by appending path to database table
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/habits");
     public static final Uri CONTENT_URI2 = Uri.parse("content://" + AUTHORITY + "/myhabits");
@@ -123,9 +123,9 @@ public class HabitContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
             case ALL_HABIT:
-                return "vnd.android.cursor.dir/vnd.com.android.habitapp.data.habit.HabitContentProvider.habits";
+                return "vnd.android.cursor.dir/vnd.com.android.habitapp.data.HabitContentProvider.habits";
             case SINGLE_habit:
-                return "vnd.android.cursor.item/vnd.com.android.habitapp.data.habit.HabitContentProvider.habits";
+                return "vnd.android.cursor.item/vnd.com.android.habitapp.data.HabitContentProvider.habits";
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }

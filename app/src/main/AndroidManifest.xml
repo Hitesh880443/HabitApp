@@ -3,6 +3,9 @@
     package="com.android.habitapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".common.HabutAppApplication"
@@ -14,12 +17,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
-            android:name=".data.habit.HabitContentProvider"
-            android:authorities="com.android.habitapp.data.habit.HabitContentProvider"
+            android:name=".data.HabitContentProvider"
+            android:authorities="com.android.habitapp.data.HabitContentProvider"
             android:exported="true"
             android:readPermission="true"
             android:writePermission="true" />
@@ -33,6 +37,7 @@
         <activity
             android:name=".common.SpashScreen"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -44,12 +49,34 @@
         <activity
             android:name=".addHabit.HabitSettingActivity"
             android:label="@string/title_activity_main3"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".addHabit.CalenderViewAct"
+            android:name=".addHabit.MyHabitDetailActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <service
+            android:name=".myhabit.reminder.NotificationIntentService2"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":remote" />
+
+
+        <receiver
+            android:name=".myhabit.reminder.NotificationEventReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver android:name=".myhabit.reminder.NotificationServiceStarterReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -20,7 +20,8 @@
     <string name="days_comp">Days completed :</string>
     <string name="remider_lbl">Reminder on :</string>
     <string name="dummy_reason">Thanks, you are right. but i saw this: Deprecated: </string>
-    <string name="peroforamance">You are on right path</string>
+    <string name="peroforamance_good">You are on right path</string>
+    <string name="peroforamance_bad">You are not  on right path</string>
     <string name="task_pending">Task Pending</string>
     <string name="task_done">Task done</string>
     <string name="delete">Delete Habit</string>

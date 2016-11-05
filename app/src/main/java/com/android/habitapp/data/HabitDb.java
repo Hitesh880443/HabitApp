@@ -1,4 +1,4 @@
-package com.android.habitapp.data.habit;
+package com.android.habitapp.data;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;

@@ -28,9 +28,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.addHabit.CalenderViewAct;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.addHabit.MyHabitDetailActivity;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;
@@ -81,13 +81,11 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
                 Date date = (Date) formatter.parse(Utils.getStringData(mContext, Constants.TODAYS_DATE));
                 date = Utils.truncateToDay(date);
                 Log.d("Date Current", date.toString());
-                if (currDate.after(date)) {
+                if (currDate.after(date) || currDate.before(date)) {
                     Log.d("Yo", "After");
-                    Utils.saveStringdata(mContext,String.valueOf(currDate.toString()), Constants.TODAYS_DATE);
+                    Utils.saveStringdata(mContext, String.valueOf(currDate.toString()), Constants.TODAYS_DATE);
                     Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, true);
-
                     updateDate();
-
                 }
 
 
@@ -151,7 +149,6 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
 
     //endregion
 
-
     //region MVP
 
     //endregion
@@ -166,7 +163,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
         adapter.setOnItemClickListener(new HabitCursorAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Cursor cursor) {
-                Intent addHabit = new Intent(mContext, CalenderViewAct.class);
+                Intent addHabit = new Intent(mContext, MyHabitDetailActivity.class);
                 String rowId = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.MY_HABIT_SR_NO));
                 Bundle bundle = new Bundle();
                 bundle.putString("rowId", rowId);
@@ -180,7 +177,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
 
         rv_habit.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        Date date=new Date();
+        Date date = new Date();
         if (date != null) {
             //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss aa");
             SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
@@ -317,16 +314,16 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     public void updateDate() {
         try {
             //if (getItemCount() > 0) {
-                if (Utils.getBoolean(mContext, Constants.UPDATE_TASK_LIST)) {
-                    ContentValues values = new ContentValues();
-                    values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
-                    //id=cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_SR_NO));
-                    Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI2));
-                    int result = mContext.getContentResolver().update(uri, values, null, null);
-                    if (result > 0) {
-                        Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, false);
-                    }
+            if (Utils.getBoolean(mContext, Constants.UPDATE_TASK_LIST)) {
+                ContentValues values = new ContentValues();
+                values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
+                //id=cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_SR_NO));
+                Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI2));
+                int result = mContext.getContentResolver().update(uri, values, null, null);
+                if (result > 0) {
+                    Utils.saveBoolean(mContext, Constants.UPDATE_TASK_LIST, false);
                 }
+            }
             //}
 
         } catch (Exception e) {

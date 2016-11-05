@@ -28,14 +28,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.addHabit.HabitSettingActivity;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.AlarmReciver;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;
-import com.android.habitapp.habitstore.beans.HabitSingle;
-import com.android.habitapp.habitstore.beans.HabitsAll;
 import com.android.habitapp.motive.view.beans.MotivationalMsg;
 import com.android.habitapp.motive.view.beans.MotivationalParent;
 import com.android.habitapp.motive.view.recycler.MotiveCursorAdapter;
@@ -68,7 +65,6 @@ public class MotiveFrag extends Fragment implements LoaderManager.LoaderCallback
 
 
     //endregion
-
 
     //region Lifecycle_and_Android_Methods
     @Override
@@ -130,7 +126,6 @@ public class MotiveFrag extends Fragment implements LoaderManager.LoaderCallback
     }
 
     //endregion
-
 
     //region MVP
 

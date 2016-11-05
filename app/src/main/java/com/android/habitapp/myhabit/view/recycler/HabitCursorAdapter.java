@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.Utils;
 
 import java.util.Date;
@@ -86,17 +86,7 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
             txt_reminder_value = (TextView) itemView.findViewById(R.id.txt_reminder_value);
             habit_status = (TextView) itemView.findViewById(R.id.habit_status);
             iv_taskDone = (ImageView) itemView.findViewById(R.id.iv_taskDone);
-           /* iv_taskDone.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Wooo", Toast.LENGTH_SHORT).show();
-                    ContentValues values = new ContentValues();
-                    values.put(HabitDb.MY_HABIT_TODAY_STATUS, 1);
-                    Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI2 + "/" + id);
-                    Log.d("update result", String.valueOf(context.getContentResolver().update(uri, values, null, null)));
 
-                }
-            });*/
 
         }
 
@@ -109,7 +99,25 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
             final int todays_Status = cursor.getInt(cursor.getColumnIndex(HabitDb.MY_HABIT_TODAY_STATUS));
             this.name.setText(Utils.setFirstltrCapitcal(name));
             this.txt_days_value.setText(" " + days_comp);
-            this.txt_reminder_value.setText(" " + reminder_time);
+            String[] toppings = new String[2];
+            toppings=reminder_time.split(":");
+            String time, convention;
+            int hrs, min;
+            String hrsS, minS;
+
+
+            if (Integer.parseInt(toppings[0]) > 12) {
+                hrs = Integer.parseInt(toppings[0]) - 12;
+                convention = "PM";
+            } else {
+                hrs = Integer.parseInt(toppings[0]);
+                convention = "AM";
+            }
+            min=Integer.parseInt(toppings[1]);
+            hrsS = String.valueOf((hrs < 10) ? "0" + hrs : hrs);
+            minS = String.valueOf((min < 10) ? "0" + min : min);
+
+            this.txt_reminder_value.setText(" " + hrsS+":"+minS+" "+convention);
 
             if (todays_Status == 0) {
                 habit_status.setText(context.getResources().getString(R.string.task_pending));

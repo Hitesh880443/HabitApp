@@ -9,10 +9,9 @@ import android.util.Log;
 
 import com.android.habitapp.MainActivity;
 import com.android.habitapp.R;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.Constants;
-import com.android.habitapp.extra.Utils;
 import com.android.habitapp.habitstore.beans.HabitSingle;
 import com.android.habitapp.habitstore.beans.HabitsAll;
 import com.android.habitapp.network.HabitAppNetworkInterFace;

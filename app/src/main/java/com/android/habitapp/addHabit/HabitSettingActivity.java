@@ -24,8 +24,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.habitapp.R;
-import com.android.habitapp.data.habit.HabitContentProvider;
-import com.android.habitapp.data.habit.HabitDb;
+import com.android.habitapp.data.HabitContentProvider;
+import com.android.habitapp.data.HabitDb;
+import com.android.habitapp.myhabit.reminder.NotificationEventReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +38,9 @@ public class HabitSettingActivity extends AppCompatActivity {
     //region Variables
     private String habit_id, habit_name, habit_desciption, habit_reson, id, habitType, reminderTime;
     private String globalTime = null;
+    private int hrsOfDay, minOfDay;
     private Context mContext;
+    DialogFragment newFragment;
     //endregion
 
     //region Views
@@ -109,8 +112,8 @@ public class HabitSettingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                        try {
-                            if (!habitType.equalsIgnoreCase("store")) {
+                    try {
+                        if (!habitType.equalsIgnoreCase("store")) {
                             habit_name = et_habit.getText().toString();
                             habit_id = "-1";
                         }
@@ -126,11 +129,15 @@ public class HabitSettingActivity extends AppCompatActivity {
                             values.put(HabitDb.MY_HABIT_REASON, habit_reson);
                             values.put(HabitDb.MY_HABIT_DAYS_COMPLETED, 0);
                             values.put(HabitDb.MY_HABIT_START_DATE, String.valueOf(new Date()));
-                            values.put(HabitDb.MY_HABIT_REMINDER_TIME, reminderTime);
+                            values.put(HabitDb.MY_HABIT_REMINDER_TIME, hrsOfDay+":"+minOfDay);
                             values.put(HabitDb.MY_HABIT_REMINDER_STATUS, "Y");
                             values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
                             Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI2, values)));
                             Toast.makeText(HabitSettingActivity.this, "Done", Toast.LENGTH_SHORT).show();
+
+
+                           // NotificationEventReceiver.setupAlarm(getApplicationContext(),hrsOfDay,minOfDay);
+
                             finish();
                         } else {
                             Toast.makeText(mContext, mContext.getResources().getString(R.string.all_mandatrity), Toast.LENGTH_SHORT).show();
@@ -143,10 +150,19 @@ public class HabitSettingActivity extends AppCompatActivity {
                 }
             });
 
+            newFragment = new TimePickerFragment(globalTime, et_time, new TimePickerFragment.GetTime() {
+                @Override
+                public void getTimeMethod(int finalHours, int final_minute) {
+
+                    hrsOfDay = finalHours;
+                    minOfDay = final_minute;
+                }
+            });
+
             et_time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
+//                    DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
                     newFragment.show(getSupportFragmentManager(), "timePicker");
                 }
             });
@@ -155,8 +171,9 @@ public class HabitSettingActivity extends AppCompatActivity {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
+//                        DialogFragment newFragment = new TimePickerFragment(globalTime, et_time);
                         newFragment.show(getSupportFragmentManager(), "timePicker");
+
 
                     }
                 }
@@ -202,13 +219,14 @@ public class HabitSettingActivity extends AppCompatActivity {
 
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
-
         EditText et_time;
         String finaltime;
+        GetTime listner;
 
-        public TimePickerFragment(String time, EditText et_time) {
+        public TimePickerFragment(String time, EditText et_time, GetTime listner) {
             this.et_time = et_time;
             this.finaltime = time;
+            this.listner = listner;
         }
 
         @Override
@@ -224,6 +242,7 @@ public class HabitSettingActivity extends AppCompatActivity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            listner.getTimeMethod(hourOfDay, minute);
             String time, convention;
             int hrs, min;
             String hrsS, minS;
@@ -242,6 +261,10 @@ public class HabitSettingActivity extends AppCompatActivity {
             et_time.setText(hrsS + ":" + minS + " " + convention);
         }
 
+        public interface GetTime {
+            public void getTimeMethod(int final_hours, int final_minute);
+
+        }
 
     }
     //endregion
