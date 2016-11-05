@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.android.habitapp.R;
 import com.android.habitapp.data.habit.HabitContentProvider;
 import com.android.habitapp.data.habit.HabitDb;
 import com.android.habitapp.extra.Utils;
+
+import java.util.Date;
 
 /**
  * Created by Hitesh on 10/21/2016.
@@ -123,11 +126,17 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Wooo", Toast.LENGTH_SHORT).show();
-                    ContentValues values = new ContentValues();
-                    values.put(HabitDb.MY_HABIT_TODAY_STATUS, 1);
+                    ContentValues myDalyvalue = new ContentValues();
+                    myDalyvalue.put(HabitDb.MY_DAILY_HABIT_ID, id);
+                    myDalyvalue.put(HabitDb.MY_DAILY__DATE, String.valueOf(new Date()));
+                    myDalyvalue.put(HabitDb.MY_DAILY_TIME, String.valueOf(new Date()));
+                    Log.d("result", String.valueOf(context.getContentResolver().insert(HabitContentProvider.CONTENT_URI4, myDalyvalue)));
+
+                    ContentValues myhabiValue = new ContentValues();
+                    myhabiValue.put(HabitDb.MY_HABIT_TODAY_STATUS, 1);
                     //id=cursor.getString(cursor.getColumnIndex(HabitDb.MY_HABIT_SR_NO));
                     Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI2 + "/" + id);
-                    int result = context.getContentResolver().update(uri, values, null, null);
+                    int result = context.getContentResolver().update(uri, myhabiValue, null, null);
                     if (result > 0) {
                         habit_status.setText(context.getResources().getString(R.string.task_done));
                         habit_status.setTextColor(context.getResources().getColor(R.color.green));

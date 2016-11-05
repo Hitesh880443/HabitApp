@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,23 +30,26 @@ import java.util.HashSet;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class CalenderViewAct extends AppCompatActivity {
-    private String habit_id, habit_name, habit_reason, habit_date, id, habit_time, habit_days_comp;
+public class CalenderViewAct extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int LOADER_SEARCH_RESULTS = 3;
+    private String habit_id, habit_name, habit_reason, habit_date, habit_sr_no, habit_time, habit_days_comp;
     private ActionBar actionBar;
     private Toolbar toolbar;
     public String TAG = "Calnder";
     public CalendarView calendar_view;
     public TextView tv_reason, tv_startDate, tv_reminder, tv_days, tv_progress;
+    private Context context;
+    HashSet<Date> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_view);
+        context = this;
         setUpView();
-
         Bundle bundle = this.getIntent().getExtras();
-        id = bundle.getString("rowId");
-        loadData(id);
+        habit_sr_no = bundle.getString("rowId");
+        loadData(habit_sr_no);
     }
 
 
@@ -64,12 +70,12 @@ public class CalenderViewAct extends AppCompatActivity {
         tv_progress = (TextView) findViewById(R.id.tv_progress);
 
         calendar_view = (CalendarView) findViewById(R.id.calendar_view);
-        final HashSet<Date> events = new HashSet<>();
-        Date today = new Date();
+        events = new HashSet<>();
+        /*Date today = new Date();
         events.add(today);
         Date tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
-        events.add(tomorrow);
-        calendar_view.updateCalendar(events);
+        events.add(tomorrow);*/
+
         calendar_view.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date) {
@@ -144,6 +150,9 @@ public class CalenderViewAct extends AppCompatActivity {
                 tv_days.setText(habit_days_comp);
                 // tv_progress.setText(habit_days_comp);
 
+
+                restratLoader();
+
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -179,4 +188,61 @@ public class CalenderViewAct extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    public void dailyData(Cursor cursor) {
+        try {
+            if (cursor != null) {
+
+                tv_days.setText(cursor.getCount()+" days");
+                while (cursor.moveToNext()) {
+                    final String dateString = cursor.getString(cursor.getColumnIndex(HabitDb.MY_DAILY__DATE));
+                    DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+                    Date date = (Date) formatter.parse(dateString);
+                    events.add(date);
+
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // cursor.close();
+            calendar_view.updateCalendar(events);
+        }
+    }
+
+    public void restratLoader() {
+        getSupportLoaderManager().initLoader(LOADER_SEARCH_RESULTS, null, this);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_SEARCH_RESULTS:
+
+                final Uri uri = Uri.parse(String.valueOf(HabitContentProvider.CONTENT_URI4 + "/" + habit_sr_no));
+                return new CursorLoader(context, uri, null, null, null, null);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_SEARCH_RESULTS:
+                dailyData(data);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_SEARCH_RESULTS:
+                dailyData(null);
+                break;
+        }
+    }
 }

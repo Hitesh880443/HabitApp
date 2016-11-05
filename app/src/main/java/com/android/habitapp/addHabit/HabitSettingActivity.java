@@ -109,8 +109,8 @@ public class HabitSettingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    try {
-                        if (!habitType.equalsIgnoreCase("store")) {
+                        try {
+                            if (!habitType.equalsIgnoreCase("store")) {
                             habit_name = et_habit.getText().toString();
                             habit_id = "-1";
                         }

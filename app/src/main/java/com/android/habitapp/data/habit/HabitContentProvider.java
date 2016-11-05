@@ -20,15 +20,21 @@ public class HabitContentProvider extends ContentProvider {
     private static final int ALL_HABIT = 1;
     private static final int SINGLE_habit = 2;
     private static final int MY_HABIT = 3;
+
     private static final int MY_SINGLE_habit = 4;
 
     private static final int MOTIVE_ALL = 5;
     private static final int MOTIVE_SIGNLE = 6;
+
+    private static final int DAILY_ALL = 7;
+    private static final int DAILY_SIGNLE = 8;
+
     private static final String AUTHORITY = "com.android.habitapp.data.habit.HabitContentProvider";
     // create content URIs from the authority by appending path to database table
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/habits");
     public static final Uri CONTENT_URI2 = Uri.parse("content://" + AUTHORITY + "/myhabits");
     public static final Uri CONTENT_URI3 = Uri.parse("content://" + AUTHORITY + "/motive");
+    public static final Uri CONTENT_URI4 = Uri.parse("content://" + AUTHORITY + "/daily");
     // a content URI pattern matches content URIs using wildcard characters:
     // *: Matches a string of any valid characters of any length.
     // #: Matches a string of numeric characters of any length.
@@ -44,6 +50,9 @@ public class HabitContentProvider extends ContentProvider {
 
         uriMatcher.addURI(AUTHORITY, "motive", MOTIVE_ALL);
         uriMatcher.addURI(AUTHORITY, "motive/#", MOTIVE_SIGNLE);
+
+        uriMatcher.addURI(AUTHORITY, "daily", DAILY_ALL);
+        uriMatcher.addURI(AUTHORITY, "daily/#", DAILY_SIGNLE);
     }
 
     private HabitDatabaseHelper dbHelper;
@@ -89,6 +98,15 @@ public class HabitContentProvider extends ContentProvider {
                 queryBuilder.setTables(HabitDb.TABLE_MOTIVE);
                 id = uri.getPathSegments().get(1);
                 queryBuilder.appendWhere(HabitDb.MOTIVE_SR_NO + "=" + id);
+                break;
+
+            case DAILY_ALL:
+                queryBuilder.setTables(HabitDb.TABLE_DAILY_ENREY);
+                break;
+            case DAILY_SIGNLE:
+                queryBuilder.setTables(HabitDb.TABLE_DAILY_ENREY);
+                id = uri.getPathSegments().get(1);
+                queryBuilder.appendWhere(HabitDb.MY_DAILY_HABIT_ID + "=" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -142,6 +160,15 @@ public class HabitContentProvider extends ContentProvider {
                 break;
             case MOTIVE_SIGNLE:
                 id = db.insert(HabitDb.TABLE_MOTIVE, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+
+            case DAILY_ALL:
+                id = db.insert(HabitDb.TABLE_DAILY_ENREY, null, contentValues);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case DAILY_SIGNLE:
+                id = db.insert(HabitDb.TABLE_DAILY_ENREY, null, contentValues);
                 getContext().getContentResolver().notifyChange(uri, null);
                 break;
             default:
