@@ -9,7 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.android.habitapp.common.SpashScreen"
     tools:showIn="@layout/activity_spash_screen">
-
+<!--
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -19,6 +19,13 @@
 
         android:textAppearance="@style/splashBig"
         android:textColor="@color/white"
-        android:textSize="66dp" />
+        android:textSize="66dp" />-->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_margin="100dp"
+        />
 
 </RelativeLayout>

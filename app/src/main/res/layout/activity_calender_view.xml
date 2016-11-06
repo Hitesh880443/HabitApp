@@ -35,8 +35,8 @@
             android:background="@drawable/bottom_border"
             android:gravity="center"
             android:paddingBottom="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:paddingTop="20dp"
             android:text="@string/dummy_reason"
             android:textSize="16dp" />
@@ -46,11 +46,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bottom_border"
             android:orientation="horizontal"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:weightSum="3">
+            android:weightSum="3"
+            tools:ignore="RtlCompat">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -171,8 +172,8 @@
             android:background="@drawable/bottom_border"
             android:gravity="center"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:paddingTop="10dp"
             android:text="@string/peroforamance_good"
             android:textColor="@color/green"
