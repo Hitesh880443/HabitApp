@@ -16,8 +16,25 @@ Habitapp comes with full featured calendar view for every habit to track and vis
 #### Widget
 Habitapp also have one widget which will show you your upcoming habit in that day, so u no need to open the app to check next habit every time
 
-###Libraries
+#### Screens
+##### Habit Store
+![GitHub Logo](/screens/HabitStore.png)
 
+##### Habit Registrtaion
+![GitHub Logo](/screens/NewHabitRegister.png)
+
+##### My Habits
+![GitHub Logo](/screens/my_habits.png)
+
+
+##### My Habit Detail
+![GitHub Logo](/screens/habit_detail.png)
+
+##### Habit Wall
+![GitHub Logo](/screens/habit_wall.png)
+
+
+###Libraries
 Retrofit - All Network related works are handled by retrofit libarry
 Calligraphy - to apply fonts to textviews
 Material Design Support, AppbarLayout, Floating Action Buttons, RecyclerView, Cards and CoordinatorLayout.
