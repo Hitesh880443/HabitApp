@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.android.habitapp.R;
 import com.android.habitapp.data.HabitContentProvider;
 import com.android.habitapp.data.HabitDb;
-import com.android.habitapp.myhabit.reminder.NotificationEventReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -54,20 +53,30 @@ public class HabitSettingActivity extends AppCompatActivity {
     //endregion
 
     //region Lifecycle_and_Android_Methods
+
+
+    public HabitSettingActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_setting);
-        mContext = this;
-        Bundle bundle = this.getIntent().getExtras();
 
-        habitType = bundle.getString("habitType");
-        if (habitType.equalsIgnoreCase("store")) {
-            id = bundle.getString("rowId");
-        }
-        setUpView();
-        if (habitType.equalsIgnoreCase("store")) {
-            loadData(id);
+        try {
+            mContext = this;
+            Bundle bundle = this.getIntent().getExtras();
+
+            habitType = bundle.getString("habitType");
+            if (habitType.equalsIgnoreCase("store")) {
+                id = bundle.getString("rowId");
+            }
+            setUpView();
+            if (habitType.equalsIgnoreCase("store")) {
+                loadData(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -76,8 +85,13 @@ public class HabitSettingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-            finish();
+        try {
+            if (item.getItemId() == android.R.id.home)
+                finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -129,14 +143,14 @@ public class HabitSettingActivity extends AppCompatActivity {
                             values.put(HabitDb.MY_HABIT_REASON, habit_reson);
                             values.put(HabitDb.MY_HABIT_DAYS_COMPLETED, 0);
                             values.put(HabitDb.MY_HABIT_START_DATE, String.valueOf(new Date()));
-                            values.put(HabitDb.MY_HABIT_REMINDER_TIME, hrsOfDay+":"+minOfDay);
+                            values.put(HabitDb.MY_HABIT_REMINDER_TIME, hrsOfDay + ":" + minOfDay);
                             values.put(HabitDb.MY_HABIT_REMINDER_STATUS, "Y");
                             values.put(HabitDb.MY_HABIT_TODAY_STATUS, 0);
                             Log.d("result", String.valueOf(getContentResolver().insert(HabitContentProvider.CONTENT_URI2, values)));
                             Toast.makeText(HabitSettingActivity.this, "Done", Toast.LENGTH_SHORT).show();
 
 
-                           // NotificationEventReceiver.setupAlarm(getApplicationContext(),hrsOfDay,minOfDay);
+                            // NotificationEventReceiver.setupAlarm(getApplicationContext(),hrsOfDay,minOfDay);
 
                             finish();
                         } else {
@@ -189,25 +203,31 @@ public class HabitSettingActivity extends AppCompatActivity {
 
     //region LocalMethods_and_classes
     private void loadData(String id) {
-        String[] projection = {
-                HabitDb.HABIT_ID,
-                HabitDb.HABIT_NAME,
-                HabitDb.HABIT_DESCIPTION,
-                HabitDb.HABIT_USERS};
 
-        Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI + "/" + id);
-        Cursor cursor = getContentResolver().query(uri, projection, null, null,
-                null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            // String habit_sr_no = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
-            habit_id = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_ID));
-            habit_name = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_NAME));
-            habit_desciption = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_DESCIPTION));
-            habit_users = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_USERS));
-            actionBar.setTitle(habit_name);
-            tv_habitdec.setText(habit_desciption);
+        try {
+            String[] projection = {
+                    HabitDb.HABIT_ID,
+                    HabitDb.HABIT_NAME,
+                    HabitDb.HABIT_DESCIPTION,
+                    HabitDb.HABIT_USERS};
+
+            Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI + "/" + id);
+            Cursor cursor = getContentResolver().query(uri, projection, null, null,
+                    null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                // String habit_sr_no = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
+                habit_id = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_ID));
+                habit_name = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_NAME));
+                habit_desciption = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_DESCIPTION));
+                habit_users = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_USERS));
+                actionBar.setTitle(habit_name);
+                tv_habitdec.setText(habit_desciption);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -220,6 +240,9 @@ public class HabitSettingActivity extends AppCompatActivity {
         EditText et_time;
         String finaltime;
         GetTime listner;
+
+        public TimePickerFragment() {
+        }
 
         public TimePickerFragment(String time, EditText et_time, GetTime listner) {
             this.et_time = et_time;
@@ -240,23 +263,28 @@ public class HabitSettingActivity extends AppCompatActivity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            listner.getTimeMethod(hourOfDay, minute);
-            String time, convention;
-            int hrs, min;
-            String hrsS, minS;
+            try {
+                listner.getTimeMethod(hourOfDay, minute);
+                String time, convention;
+                int hrs, min;
+                String hrsS, minS;
 
-            finaltime = "00:" + hourOfDay + ":" + minute;
+                finaltime = "00:" + hourOfDay + ":" + minute;
 
-            if (hourOfDay > 12) {
-                hrs = hourOfDay - 12;
-                convention = "PM";
-            } else {
-                hrs = hourOfDay;
-                convention = "AM";
+                if (hourOfDay > 12) {
+                    hrs = hourOfDay - 12;
+                    convention = "PM";
+                } else {
+                    hrs = hourOfDay;
+                    convention = "AM";
+                }
+                hrsS = String.valueOf((hrs < 10) ? "0" + hrs : hrs);
+                minS = String.valueOf((minute < 10) ? "0" + minute : minute);
+                et_time.setText(hrsS + ":" + minS + " " + convention);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            hrsS = String.valueOf((hrs < 10) ? "0" + hrs : hrs);
-            minS = String.valueOf((minute < 10) ? "0" + minute : minute);
-            et_time.setText(hrsS + ":" + minS + " " + convention);
+
         }
 
         public interface GetTime {

@@ -55,31 +55,43 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
     //endregion
 
     //region Lifecyle and Acitivity methods
+
+
+    public MyHabitDetailActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_view);
-        context = this;
-        setUpView();
-        Bundle bundle = this.getIntent().getExtras();
-        habit_sr_no = bundle.getString("rowId");
-        loadData(habit_sr_no);
+
+        try {
+            context = this;
+            setUpView();
+            Bundle bundle = this.getIntent().getExtras();
+            habit_sr_no = bundle.getString("rowId");
+            loadData(habit_sr_no);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-            finish();
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            case R.id.delete:
-                deleteHabit(habit_sr_no);
-                break;
-
+        try {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    finish();
+                    break;
+                case R.id.delete:
+                    deleteHabit(habit_sr_no);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -226,7 +238,7 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
                     long diff = Math.round((new Date().getTime() - startdate.getTime()) / (double) 86400000);
                     float percentage = (cursor.getCount() / diff) * 100;
                     if (percentage > 50) {
-                        tv_progress.setText( context.getResources().getString(R.string.peroforamance_good));
+                        tv_progress.setText(context.getResources().getString(R.string.peroforamance_good));
                         tv_progress.setTextColor(context.getResources().getColor(R.color.green));
 
                     } else {
@@ -261,32 +273,38 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
     public void deleteHabit(final String id) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MyHabitDetailActivity.this);
-        alertDialog.setTitle("Confirm Delete...");
-        alertDialog.setMessage("Are you sure you want delete " + habit_name + " habit ?");
-        alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI2 + "/" + id);
-                long result = getContentResolver().delete(uri, null, null);
-                Log.d("Result", String.valueOf(result));
 
-                Uri uri2 = Uri.parse(HabitContentProvider.CONTENT_URI4 + "/" + id);
-                long result2 = getContentResolver().delete(uri, null, null);
-                Log.d("Result", String.valueOf(result));
-                Toast.makeText(getApplicationContext(), habit_name + " deleted successfully", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+        try {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MyHabitDetailActivity.this);
+            alertDialog.setTitle("Confirm Delete...");
+            alertDialog.setMessage("Are you sure you want delete " + habit_name + " habit ?");
+            alertDialog.setIcon(R.drawable.delete);
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Uri uri = Uri.parse(HabitContentProvider.CONTENT_URI2 + "/" + id);
+                    long result = getContentResolver().delete(uri, null, null);
+                    Log.d("Result", String.valueOf(result));
 
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+                    Uri uri2 = Uri.parse(HabitContentProvider.CONTENT_URI4 + "/" + id);
+                    long result2 = getContentResolver().delete(uri, null, null);
+                    Log.d("Result", String.valueOf(result));
+                    Toast.makeText(getApplicationContext(), habit_name + " deleted successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
 
-        // Showing Alert Message
-        alertDialog.show();
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            // Showing Alert Message
+            alertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     //endregion

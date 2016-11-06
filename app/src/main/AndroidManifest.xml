@@ -29,12 +29,6 @@
             android:readPermission="true"
             android:writePermission="true" />
 
-        <receiver android:name=".extra.AlarmReciver" />
-
-        <service
-            android:name=".extra.Alarm_service"
-            android:enabled="true" />
-
         <activity
             android:name=".common.SpashScreen"
             android:label="@string/app_name"

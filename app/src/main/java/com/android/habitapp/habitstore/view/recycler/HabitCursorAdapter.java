@@ -64,13 +64,13 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
     public static class HabitViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, habit_desc;
-        Button btn_start;
+
 
         public HabitViewHolder(final View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.habit_name);
             habit_desc = (TextView) itemView.findViewById(R.id.habit_desc);
-            btn_start = (Button) itemView.findViewById(R.id.btn_start);
+
 
         }
 
@@ -79,8 +79,7 @@ public class HabitCursorAdapter extends RecyclerViewCursorAdapter<HabitCursorAda
             final String habit_desc = cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_DESCIPTION));
             this.name.setText(Utils.setFirstltrCapitcal(name));
             this.habit_desc.setText(habit_desc);
-            if (cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_ID)).equalsIgnoreCase("5"))
-                this.btn_start.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+
         }
     }
 }
