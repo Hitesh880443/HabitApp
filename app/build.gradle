@@ -24,10 +24,10 @@ android {
 
         signingConfigs {
             config {
-                keyAlias 'HabitReleasekey'
-                keyPassword 'Habit123'
-                storeFile file('../HabitKey.jks')
-                storePassword 'Habit123'
+                keyAlias 'hitesh_alias'
+                keyPassword 'Alias123$'
+                storeFile file('../MyRockstarKey.jks')
+                storePassword 'Hitesh123$'
             }
         }
 
