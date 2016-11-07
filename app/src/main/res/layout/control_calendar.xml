@@ -22,6 +22,7 @@
 			android:layout_height="30dp"
 			android:layout_centerVertical="true"
 			android:layout_alignParentLeft="true"
+			android:contentDescription="@string/prev_month"
 			android:src="@drawable/before"/>
 
 		<!-- date title -->
@@ -44,6 +45,7 @@
 			android:layout_height="30dp"
 			android:layout_centerVertical="true"
 			android:layout_alignParentRight="true"
+			android:contentDescription="@string/nextMonth"
 			android:src="@drawable/next"/>
 	</RelativeLayout>
 

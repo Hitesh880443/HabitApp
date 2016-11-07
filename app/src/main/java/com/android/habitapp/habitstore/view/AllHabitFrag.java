@@ -38,6 +38,7 @@ import com.android.habitapp.habitstore.beans.HabitsAll;
 import com.android.habitapp.habitstore.view.recycler.HabitCursorAdapter;
 import com.android.habitapp.network.HabitAppNetworkInterFace;
 import com.android.habitapp.network.RetrofitAPI;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +57,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
     PendingIntent pendingintent;
     private HabitCursorAdapter adapter;
     private Context mContext;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     //endregion
 
@@ -72,6 +74,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
 
     }
 
@@ -147,11 +150,21 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
                 Intent addHabit = new Intent(mContext, HabitSettingActivity.class);
                 String rowId = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_NAME));
                 Bundle bundle = new Bundle();
                 bundle.putString("rowId", rowId);
                 bundle.putString("habitType", "store");
                 addHabit.putExtras(bundle);
                 mContext.startActivity(addHabit);
+
+
+                if(Utils.isNetworkAvailable(mContext))
+                {
+                    Bundle analy = new Bundle();
+                    analy.putString(FirebaseAnalytics.Param.ITEM_ID, rowId);
+                    analy.putString(FirebaseAnalytics.Param.ITEM_NAME, "habitstore");
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, analy);
+                }
 
             }
         });

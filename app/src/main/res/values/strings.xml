@@ -37,4 +37,11 @@
     <string name="et_time">Set Habit Time</string>
     <string name="save_habit">Click to save habit Detail</string>
     <string name="delete_habit">Delete habit</string>
+    <string name="deleted">deleted successfully</string>
+    <string name="task_done_todays">Todays task done</string>
+    <string name="prev_month">Previous Month</string>
+    <string name="nextMonth">Next Month</string>
+    <string name="banner_home_footer">ca-app-pub-9476532424289303/4211797676</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

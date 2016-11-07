@@ -34,6 +34,10 @@ import com.android.habitapp.data.HabitDb;
 import com.android.habitapp.extra.Constants;
 import com.android.habitapp.extra.Utils;
 import com.android.habitapp.myhabit.view.recycler.HabitCursorAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,7 +56,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     private Date currDate, saveDate;
     private Date todaysDate;
     private TextView tv_todays_date;
-
+    private AdView mAdView;
     //endregion
 
     //region Views
@@ -74,6 +78,7 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
             mContext = getActivity();
             currDate = Utils.truncateToDay(new Date());
             Log.d("Date Current", currDate.toString());
+
 
             if (Utils.getStringData(mContext, Constants.TODAYS_DATE) != null) {
                 DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
@@ -130,6 +135,14 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
     }
@@ -137,12 +150,18 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onResume() {
         super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         restratLoader();
         Log.d("Resume call", "My Habit");
     }
 
     @Override
     public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
         super.onDestroy();
     }
 
@@ -154,6 +173,17 @@ public class MyHabitFrag extends Fragment implements LoaderManager.LoaderCallbac
 
     //region setViews
     private void setupViews(View view) {
+        if(Utils.isNetworkAvailable(mContext)) {
+            MobileAds.initialize(mContext, mContext.getResources().getString(R.string.banner_home_footer));
+            mAdView = (AdView) view.findViewById(R.id.ad_view);
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .build();
+
+            // Start loading the ad in the background.
+            mAdView.loadAd(adRequest);
+        }
+
         rl_progressbar = (RelativeLayout) view.findViewById(R.id.rl_progressbar);
         tv_todays_date = (TextView) view.findViewById(R.id.tv_todays_date);
         rv_habit = (RecyclerView) view.findViewById(R.id.rv_habit);

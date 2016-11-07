@@ -23,6 +23,7 @@ import com.android.habitapp.addHabit.HabitSettingActivity;
 import com.android.habitapp.habitstore.view.AllHabitFrag;
 import com.android.habitapp.motive.view.MotiveFrag;
 import com.android.habitapp.myhabit.view.MyHabitFrag;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private String habit_id, habit_name, habit_desciption, habit_users;
     private ArrayList<Fragment> fragList;
     private ArrayList<String> fragListName;
+    private FirebaseAnalytics mFirebaseAnalytics;
     //endregion
 
     //region Views
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 

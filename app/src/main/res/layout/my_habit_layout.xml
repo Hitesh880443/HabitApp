@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:background="@color/white"
 
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/rl_progressbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <com.github.rahatarmanahmed.cpv.CircularProgressView
-            android:id="@+id/c_pregress"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:cpv_animAutostart="true"
-            app:cpv_indeterminate="true" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_todays_date"
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="5dp"
-        android:padding="5dp"
-        android:textSize="16dp"
-        android:textColor="@color/red"
-        android:text="12/12/2015" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_habit"
+    <LinearLayout
+        android:layout_above="@id/ad_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.github.rahatarmanahmed.cpv.CircularProgressView
+                android:id="@+id/c_pregress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                app:cpv_animAutostart="true"
+                app:cpv_indeterminate="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_todays_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="12/12/2015"
+            android:textColor="@color/red"
+            android:textSize="16dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/white"
+            android:id="@+id/rv_habit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
 
-        ></android.support.v7.widget.RecyclerView>
+            ></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

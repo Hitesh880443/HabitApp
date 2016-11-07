@@ -288,7 +288,7 @@ public class MyHabitDetailActivity extends AppCompatActivity implements LoaderMa
                     Uri uri2 = Uri.parse(HabitContentProvider.CONTENT_URI4 + "/" + id);
                     long result2 = getContentResolver().delete(uri, null, null);
                     Log.d("Result", String.valueOf(result));
-                    Toast.makeText(getApplicationContext(), habit_name + " deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), habit_name + context.getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
