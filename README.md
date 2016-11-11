@@ -1,4 +1,6 @@
 # CapStone Stage2 - Habitapp
+![GitHub Logo](/screens/HabitApp.png)
+
 Habitapp helps you create and maintain good habits, allowing you to achieve your long-term goals. Detailed statistics show you how your habits improved over time.
 #### Organize Your Life!
 Habitapp android app helps to keep track of your day to day habits and routines
