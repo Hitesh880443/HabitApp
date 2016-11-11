@@ -118,8 +118,6 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
     public void onResume() {
         super.onResume();
         if (Utils.isNetworkAvailable(mContext)) {
-            /*if (Utils.getBoolean(mContext, Constants.FIRST_RUN) == false)
-                showProgress();*/
             getData();
         }
     }
@@ -145,9 +143,6 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
         adapter.setOnItemClickListener(new HabitCursorAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Cursor cursor) {
-                //Toast.makeText(mContext, cursor.getString(cursor.getColumnIndex(HabitDb.HABIT_NAME)), Toast.LENGTH_SHORT).show();
-                // showHabit(cursor);
-
                 Intent addHabit = new Intent(mContext, HabitSettingActivity.class);
                 String rowId = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_SR_NO));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(HabitDb.HABIT_NAME));
@@ -286,7 +281,6 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
     public void deleteRows() {
         Log.d("Habit delete", String.valueOf(mContext.getContentResolver().delete(HabitContentProvider.CONTENT_URI, null, null)));
     }
-
 
 
 //endregion
