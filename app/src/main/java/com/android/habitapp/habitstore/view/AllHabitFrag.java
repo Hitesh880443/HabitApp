@@ -87,10 +87,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
 
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -262,11 +259,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    private void showProgress() {
-        if (rl_progressbar.getVisibility() != View.VISIBLE) {
-            rl_progressbar.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     private void stopProgress() {
         if (rl_progressbar.getVisibility() != View.GONE) {
@@ -278,9 +271,7 @@ public class AllHabitFrag extends Fragment implements LoaderManager.LoaderCallba
         this.getLoaderManager().restartLoader(LOADER_SEARCH_RESULTS, null, this);
     }
 
-    public void deleteRows() {
-        Log.d("Habit delete", String.valueOf(mContext.getContentResolver().delete(HabitContentProvider.CONTENT_URI, null, null)));
-    }
+
 
 
 //endregion
